@@ -1,5 +1,7 @@
-//TODO: define variables from html
-const playerShuffle = document.getElementById('shuffle');
+
+
+const playerShuffle1 = document.getElementById('shuffle');
+
 const playerDeal = document.getElementById('deal');
 const playerHit = document.getElementById('hit');
 const playerStay = document.getElementById('stay');
@@ -20,7 +22,7 @@ const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 //TODO: fetch request to draw a card.  We will create a "deal" function later
 
 const shuffleCards = function () {
-    const shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`
+    const shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`;
 
     fetch(shuffleUrl)
         .then (function (response) {
@@ -37,7 +39,7 @@ const shuffleCards = function () {
             console.log(deckId);
             localStorage.setItem('deckId', deckId);
         })
-        .catch(function(error) {
+        .catch(function() {
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
@@ -61,7 +63,7 @@ const dealCards = function () {
             for (i=0; i<=3; i++) {
             console.log (data.cards[i].code);
             };
-            dealerHand(data);
+            //dealerHand(data);
             playerHand(data);
         })
         .catch(function(error) {
@@ -91,26 +93,31 @@ const playerHand = function(data) {
 };
 
 const renderPlayerCards = function () {
-    for (i=0; i < playerCards.length; i++) {
+    
+    //showPlayerCards.empty();
+        for (i=0; i < playerCards.length; i++) {
+        
         const img = document.createElement('img');
         img.src = playerCards[i].image;
         img.alt = `This card is ${playerCards[i].code}`;
+        img.class = 'card'
         showPlayerCards.appendChild(img);
     }
-}
+};
 
 const renderDealerCards = function () {
     for (i=0; i < dealerCards.length; i++) {
         const img = document.createElement('img');
         img.src = dealerCards[i].image;
+        
         img.alt = `This card is ${dealerCards[i].code}`;
         console.log(`cards to be rendered: ${dealerCards[i].code}`);
         console.log(dealerCards.length);
         showDealerCards.appendChild(img);
     }
-}
+};
 //TODO: Add event listener to buttons for gameplay
-playerShuffle.addEventListener('click', shuffleCards);
+playerShuffle1.addEventListener('click', shuffleCards);
 
 playerDeal.addEventListener('click', dealCards);
 
