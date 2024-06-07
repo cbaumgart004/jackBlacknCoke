@@ -133,3 +133,10 @@ playerSplit.addEventListener('click', function(){
 
 
 //localStorage.clear();
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('card');
+    
+    card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+    });
+});

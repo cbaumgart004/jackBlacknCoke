@@ -1,0 +1,66 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.card{
+    width: 400px;
+    perspective: 1000px;
+}
+
+
+.card-content{
+    text-align: center;
+    position: relative;
+    padding: 5em;
+    transition: transform 3s;
+    background: pink;
+    transform-style: preserve-3d;
+    border-radius: 25px;
+}
+
+.card.flipped .card-content{
+    transform: rotateY(.5turn);
+}
+
+.card-front,
+.card-back{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2em;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.card-front{
+    background: lightgreen;
+    border-radius: 25px;
+}
+
+.card-title{
+    font-size: 1rem;
+    transform: translateZ(6rem);
+}
+
+.card-body{
+    transform: translateZ(4rem);
+}
+
+.card-subtitle{
+    transform: translateZ(4rem);
+}
+
+.card-back{
+    transform: rotateY(.5turn);
+    background: lightblue;
+    border-radius: 25px;
+}
