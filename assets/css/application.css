@@ -3,11 +3,38 @@
     margin: 0;
 }
 
-body{
+body {
+    background-image: url('../images/Future-casino.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     height: 100vh;
+    width: 100vw; /* Use 100vw for full width of the viewport */
     display: grid;
     place-items: left;
 }
+
+.login-page{
+    color: white;
+}
+
+.game-page{
+    color: white;
+}
+
+.btn{
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+}
+
+/*.background-img{
+    background-image: url('../images/Future-casino.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}*/
 
 .card{
     width: 400px;
@@ -23,7 +50,7 @@ body{
     background: pink;
     transform-style: preserve-3d;
     border-radius: 25px;
-    
+    color: rgb(255, 255, 255);
 }
 
 .card.flipped .card-content{
@@ -43,14 +70,16 @@ body{
 }
 
 .card-front{
-    background: lightgreen;
+    background: rgb(8, 9, 10);
     border-radius: 25px;
 }
 
 .card-title{
     font-size: 1rem;
     transform: translateZ(6rem);
+    color: white;
 }
+
 
 .card-body{
     transform: translateZ(4rem);
@@ -60,6 +89,7 @@ body{
 .card-subtitle{
     transform: translateZ(4rem);
 }
+
 
 .card-back{
     transform: rotateY(.5turn);
