@@ -1,18 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+
     <link rel="stylesheet" href="./assets/css/index.css" />
-    <title>Document</title>
+    <title>Jack Black n Coke</title>
 </head>
+
 <body>
-    <section class = "nav">
-        <a href ="application.html">Game Page</a>
-    </section>
-    <h1>Login Page</h1>
+    <header>
+        <h1>Jack Black n Coke</h1>
+    </header>
+    <button class="js-modal-trigger" data-target="modal-js-example">
+        Sign in to play
+    </button>
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+                <p>Enter login information</p>
+
+                <div class="container">
+                    <p class="control has-icons-left has-icons-right">
+                        <input class="input" type="username" placeholder="Username">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="container">
+                    <p class="control has-icons-left">
+                        <input class="input" type="password" placeholder="Password">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="container">
+                    <p class="control">
+                        <button class="button is-success">
+                            Login
+                        </button>
+                    </p>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="./assets/js/index.js"></script>
+
 </body>
+
 </html>
