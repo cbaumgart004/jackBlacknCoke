@@ -6,7 +6,7 @@
 body{
     height: 100vh;
     display: grid;
-    place-items: center;
+    place-items: left;
 }
 
 .card{
@@ -23,6 +23,7 @@ body{
     background: pink;
     transform-style: preserve-3d;
     border-radius: 25px;
+    
 }
 
 .card.flipped .card-content{
@@ -53,6 +54,7 @@ body{
 
 .card-body{
     transform: translateZ(4rem);
+    
 }
 
 .card-subtitle{
