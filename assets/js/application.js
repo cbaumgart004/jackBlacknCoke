@@ -7,6 +7,7 @@ const playerHit = document.getElementById('hit');
 const playerStay = document.getElementById('stay');
 const playerDoubleDown = document.getElementById('doubleDown');
 const playerSplit = document.getElementById('split');
+const playerClear = document.getElementById('clear');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
@@ -84,32 +85,62 @@ const playerHand = function(data) {
     for(i = 2, j=0; i <=3, j<=1; i++, j++) {
     
     playerCards[j] = data.cards[i];
+    //Turn card values into integers
+    if (playerCards[j].value === "JACK"|| 
+        playerCards[j].value === "QUEEN"|| 
+        playerCards[j].value === "KING") {
+        playerCards[j].value = parseInt(10);
+    } else if (playerCards[j].value === "ACE"){
+        playerCards[j].value = parseInt(11);
+    } else {
+    playerCards[j].value = parseInt(playerCards[j].value);
+    };
+    
+    console.log(j);
     console.log(playerCards[j]);
+    console.log(playerCards[j].value);
     
     };
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     console.log(playerCards[0].code);
+    console.log(`Card 1: ${playerCards[0].value} + Card 2: ${playerCards[1].value} = `)
+    let playerTotal = playerCards[0].value + playerCards[1].value;
+    if (playerTotal === 21) {
+        alert ('Blackjack');
+    };
+    console.log(playerTotal);
     renderPlayerCards();
 };
 
 const renderPlayerCards = function () {
     
     //showPlayerCards.empty();
+        //wipe the board
+        /*const childrenElements = showPlayerCards.children;
+        for (i = 0; i < childrenElements.length; i++) {
+            console.log(childrenElements.length);
+            childrenElements[i].innerHTML = '';
+        };*/
+        //Set the cards
         for (i=0; i < playerCards.length; i++) {
-        
+    
         const img = document.createElement('img');
+        img.setAttribute('id', `playerCard${i}`);
         img.src = playerCards[i].image;
         img.alt = `This card is ${playerCards[i].code}`;
-        img.class = 'card'
+        img.classList.add('card');
         showPlayerCards.appendChild(img);
     }
 };
 const renderDealerCards = function () {
     for (i=0; i <= dealerCards.length; i++) {
         const img2 = document.createElement('img2');
+        img.setAttribute('id', `dealerCard${i}`);
         img2.textContent = dealerCards[i].code;
-        img.src = dealerCards[i].image;
+        img2.src = dealerCards[i].image;
+        img.classList.add('card');
         showDealerCards.appendChild(img2);
+        
     }
 };
 /*const renderDealerCards = function () {
@@ -124,6 +155,13 @@ const renderDealerCards = function () {
         showDealerCards.appendChild(img);
     }
 };*/
+
+const tableClear = function () {
+    for (i=0; i < playerCards.length; i++) {
+        let childElement = document.getElementById(`playerCard${i}`);
+        childElement.innerHTML = "";
+    }
+};
 //TODO: Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
@@ -145,6 +183,8 @@ playerDoubleDown.addEventListener('click', function(){
 playerSplit.addEventListener('click', function(){
     console.log('split');
 });
+
+playerClear.addEventListener('click', tableClear);
 
 
 //localStorage.clear();
