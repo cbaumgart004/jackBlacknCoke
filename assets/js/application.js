@@ -104,18 +104,26 @@ const renderPlayerCards = function () {
         showPlayerCards.appendChild(img);
     }
 };
-
 const renderDealerCards = function () {
+    for (i=0; i <= dealerCards.length; i++) {
+        const img2 = document.createElement('img2');
+        img2.textContent = dealerCards[i].code;
+        img.src = dealerCards[i].image;
+        showDealerCards.appendChild(img2);
+    }
+};
+/*const renderDealerCards = function () {
     for (i=0; i < dealerCards.length; i++) {
         const img = document.createElement('img');
         img.src = dealerCards[i].image;
         
         img.alt = `This card is ${dealerCards[i].code}`;
+        img.textContent = dealerCards[i].code;
         console.log(`cards to be rendered: ${dealerCards[i].code}`);
         console.log(dealerCards.length);
         showDealerCards.appendChild(img);
     }
-};
+};*/
 //TODO: Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
