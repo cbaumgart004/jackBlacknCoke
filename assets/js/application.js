@@ -140,3 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.toggle('flipped');
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const card2 = document.getElementById('card2');
+    
+    card2.addEventListener('click', () => {
+        card2.classList.toggle('flipped');
+    });
+});
