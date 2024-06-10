@@ -27,14 +27,12 @@ body {
 .login-page{
     color: white;
     border-radius: 5px;
-    border: 2px solid rgb(0, 0, 0);
     background: linear-gradient(to right, #000000, #80c6ff);
 }
 
 .game-page{
     color: white;
     border-radius: 10px;
-    border: 2px solid rgb(0, 0, 0);
     text-decoration: underline black;
     
 }
@@ -43,7 +41,7 @@ body {
     background: linear-gradient(to left, #000000, #80c6ff);
     color: white;
     border-radius: 15px;
-    border: 2px solid white;
+    border: 2px solid rgb(0, 0, 0);
 }
 
 

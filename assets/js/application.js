@@ -113,53 +113,46 @@ const playerHand = function(data) {
 };
 
 const renderPlayerCards = function () {
-    
-    //showPlayerCards.empty();
-        //wipe the board
-        /*const childrenElements = showPlayerCards.children;
-        for (i = 0; i < childrenElements.length; i++) {
-            console.log(childrenElements.length);
-            childrenElements[i].innerHTML = '';
-        };*/
-        //Set the cards
-        for (i=0; i < playerCards.length; i++) {
-    
-        const img = document.createElement('img');
-        img.setAttribute('id', `playerCard${i}`);
-        img.src = playerCards[i].image;
-        img.alt = `This card is ${playerCards[i].code}`;
-        img.classList.add('card');
-        showPlayerCards.appendChild(img);
-    }
-};
-const renderDealerCards = function () {
-    for (i=0; i <= dealerCards.length; i++) {
-        const img2 = document.createElement('img2');
-        img.setAttribute('id', `dealerCard${i}`);
-        img2.textContent = dealerCards[i].code;
-        img2.src = dealerCards[i].image;
-        img.classList.add('card');
-        showDealerCards.appendChild(img2);
-        
-    }
-};
-/*const renderDealerCards = function () {
-    for (i=0; i < dealerCards.length; i++) {
-        const img = document.createElement('img');
-        img.src = dealerCards[i].image;
-        
-        img.alt = `This card is ${dealerCards[i].code}`;
-        img.textContent = dealerCards[i].code;
-        console.log(`cards to be rendered: ${dealerCards[i].code}`);
-        console.log(dealerCards.length);
-        showDealerCards.appendChild(img);
-    }
-};*/
 
-const tableClear = function () {
-    for (i=0; i < playerCards.length; i++) {
-        let childElement = document.getElementById(`playerCard${i}`);
-        childElement.innerHTML = "";
+    showPlayerCards.innerHTML = ''; // Clear previous cards
+    for (let i = 0; i < playerCards.length; i++) {
+        const card = document.createElement('article');
+        card.classList.add('card');
+        card.innerHTML = `
+            <div class="card-content">
+                <section class="card-front">
+                    <img src="${playerCards[i].image}" alt="This card is ${playerCards[i].code}" class="card-img">
+                </section>
+                <section class="card-back">
+                    <p class="card-body">Card back</p>
+                </section>
+            </div>`;
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        showPlayerCards.appendChild(card);
+    }
+};
+
+
+const renderDealerCards = function () {
+    showDealerCards.innerHTML = ''; // Clear previous cards
+    for (let i = 0; i < dealerCards.length; i++) {
+        const card = document.createElement('article');
+        card.classList.add('card');
+        card.innerHTML = `
+            <div class="card-content">
+                <section class="card-front">
+                    <img src="${dealerCards[i].image}" alt="This card is ${dealerCards[i].code}" class="card-img">
+                </section>
+                <section class="card-back">
+                    <p class="card-body">Card back</p>
+                </section>
+            </div>`;
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        showDealerCards.appendChild(card);
     }
 };
 //TODO: Add event listener to buttons for gameplay
