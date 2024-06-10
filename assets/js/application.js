@@ -1,10 +1,13 @@
-//TODO: define variables from html
-const playerShuffle = document.getElementById('shuffle');
+
+
+const playerShuffle1 = document.getElementById('shuffle');
+
 const playerDeal = document.getElementById('deal');
 const playerHit = document.getElementById('hit');
 const playerStay = document.getElementById('stay');
 const playerDoubleDown = document.getElementById('doubleDown');
 const playerSplit = document.getElementById('split');
+const playerClear = document.getElementById('clear');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
@@ -20,7 +23,7 @@ const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 //TODO: fetch request to draw a card.  We will create a "deal" function later
 
 const shuffleCards = function () {
-    const shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`
+    const shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`;
 
     fetch(shuffleUrl)
         .then (function (response) {
@@ -37,7 +40,7 @@ const shuffleCards = function () {
             console.log(deckId);
             localStorage.setItem('deckId', deckId);
         })
-        .catch(function(error) {
+        .catch(function() {
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
@@ -61,7 +64,7 @@ const dealCards = function () {
             for (i=0; i<=3; i++) {
             console.log (data.cards[i].code);
             };
-            dealerHand(data);
+            //dealerHand(data);
             playerHand(data);
         })
         .catch(function(error) {
@@ -82,15 +85,35 @@ const playerHand = function(data) {
     for(i = 2, j=0; i <=3, j<=1; i++, j++) {
     
     playerCards[j] = data.cards[i];
+    //Turn card values into integers
+    if (playerCards[j].value === "JACK"|| 
+        playerCards[j].value === "QUEEN"|| 
+        playerCards[j].value === "KING") {
+        playerCards[j].value = parseInt(10);
+    } else if (playerCards[j].value === "ACE"){
+        playerCards[j].value = parseInt(11);
+    } else {
+    playerCards[j].value = parseInt(playerCards[j].value);
+    };
+    
+    console.log(j);
     console.log(playerCards[j]);
+    console.log(playerCards[j].value);
     
     };
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     console.log(playerCards[0].code);
+    console.log(`Card 1: ${playerCards[0].value} + Card 2: ${playerCards[1].value} = `)
+    let playerTotal = playerCards[0].value + playerCards[1].value;
+    if (playerTotal === 21) {
+        alert ('Blackjack');
+    };
+    console.log(playerTotal);
     renderPlayerCards();
 };
 
 const renderPlayerCards = function () {
+
     showPlayerCards.innerHTML = ''; // Clear previous cards
     for (let i = 0; i < playerCards.length; i++) {
         const card = document.createElement('article');
@@ -133,7 +156,7 @@ const renderDealerCards = function () {
     }
 };
 //TODO: Add event listener to buttons for gameplay
-playerShuffle.addEventListener('click', shuffleCards);
+playerShuffle1.addEventListener('click', shuffleCards);
 
 playerDeal.addEventListener('click', dealCards);
 
@@ -153,6 +176,8 @@ playerDoubleDown.addEventListener('click', function(){
 playerSplit.addEventListener('click', function(){
     console.log('split');
 });
+
+playerClear.addEventListener('click', tableClear);
 
 
 //localStorage.clear();
