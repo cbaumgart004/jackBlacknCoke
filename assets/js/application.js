@@ -13,9 +13,9 @@ const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
 
 const deckId = localStorage.getItem('deckId');
-const playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
+let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
 //console.log(playerCards[0].code, playerCards[1].code);
-const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
+let dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 console.log(`page open dealer cards: ${dealerCards}` )
 //console.log (dealerCards[0].image);
 //console.log(dealerCards[0].code, dealerCards[1].code);
@@ -25,11 +25,13 @@ console.log(`page open dealer cards: ${dealerCards}` )
 //TODO: fetch request to draw a card.  We will create a "deal" function later
 
 const shuffleCards = function () {
+    localStorage.getItem('deckId', 'deckId')
+    let shuffleUrl;
     if (!deckId) {
-    let shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`;
+    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=7`;
 } else {
-    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=1`;
-}
+    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=7`;
+};
     fetch(shuffleUrl)
         .then (function (response) {
             if (response.ok) {
@@ -59,7 +61,7 @@ const dealCards = function () {
     fetch(dealDealerUrl)
         .then (function (response) {
             if (response.ok) {
-                
+                console.log(response);
                 return response.json();
                 
             } else {
@@ -68,7 +70,9 @@ const dealCards = function () {
         }).then (function (data) {
             for (i=0; i<=1; i++) {
                 dealerCards[i] = data.cards[i];
+                
             };
+            console.log(data);
             dealerHand(data);
             
         })
@@ -89,6 +93,7 @@ const dealCards = function () {
         }).then (function (data) {
             for (i=0; i<=1; i++) {
                 playerCards[i] = data.cards[i];
+                console.log(playerCards[i]);
             };
             
             playerHand(data);
@@ -136,9 +141,13 @@ const playerHand = function(data) {
         playerCards[i].value = parseInt(11);
     } else {
     playerCards[i].value = parseInt(playerCards[i].value);
+    
+    
     };
+    console.log(playerCards[i].value);
     playerTotal += playerCards[i].value;
     };
+    
     console.log(playerTotal);
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     localStorage.setItem('playerTotal', playerTotal);
@@ -148,8 +157,11 @@ const playerHand = function(data) {
     if (playerTotal === 21) {
         alert ('Blackjack');
     };
+    
+    console.log(`player has ${playerCards.length} cards`)
     console.log(`Player Shows ${playerTotal}`);
     renderPlayerCards();
+    checkForBust(playerTotal);
 };
 
 const renderPlayerCards = function () {
@@ -169,12 +181,16 @@ const renderPlayerCards = function () {
         img.src = playerCards[i].image;
         img.alt = `This card is ${playerCards[i].code}`;
         img.classList.add('card');
-        showPlayerCards.appendChild(img);
-    }
+        if (!document.getElementById(`playerCard${i}`)) {
+            showPlayerCards.appendChild(img);
+        };
+        
+    };
     
 };
 const renderDealerCards = function () {
-    for (i=0; i < dealerCards.length; i++) {
+    
+    for (let i=0; i < dealerCards.length; i++) {
         const img = document.createElement('img');
         img.setAttribute('id', `dealerCard${i}`);
         if (i===1){
@@ -184,15 +200,19 @@ const renderDealerCards = function () {
         }
         
         img.classList.add('card');
-        showDealerCards.appendChild(img);
         
+        
+        
+        
+        showDealerCards.appendChild(img);
     };
+    
     
 };
 
-/*const playerHit = function () {
+const playerHitCard = function () {
     const hitUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
-    fetch(dealUrl)
+    fetch(hitUrl)
         .then (function (response) {
             if (response.ok) {
                 
@@ -202,17 +222,31 @@ const renderDealerCards = function () {
                 alert(`Error: ${response.statusText}`);
             }
         }).then (function (data) {
-            playerHand.push(data);
+            console.log(data.cards);
+            playerCards.push(data.cards[0]);
+            localStorage.setItem('playerCards', JSON.stringify(playerCards));
+            console.log
+            console.log(`player has ${playerCards.length} cards`);
+            console.log(`player cards: ${playerCards}`);
             playerHand(data);
         })
         .catch(function(error) {
             console.log(error);
             alert (`Unable to connect to Deck of Cards API`);
         });
-};*/
+};
 
+const checkForBust = function(playerTotal) {
+    if (playerTotal > 21) {
+        alert('Player went bust');
+    }
+};
 
 const tableClear = function () {
+    dealerCards = [];
+    playerCards = [];
+    localStorage.setItem('playerCards', JSON.stringify(playerCards));
+    localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
     for (i=0; i < playerCards.length; i++) {
         let childElement = document.getElementById(`playerCard${i}`);
         console.log(childElement);
@@ -221,6 +255,8 @@ const tableClear = function () {
     }
 
     showPlayerCards.innerHTML = ''; // Clear previous cards
+    showDealerCards.innerHTML = '';
+    
     for (let i = 0; i < playerCards.length; i++) {
         const card = document.createElement('article');
         card.classList.add('card');
@@ -248,9 +284,7 @@ playerShuffle1.addEventListener('click', shuffleCards);
 playerDeal.addEventListener('click', dealCards);
 
 
-playerHit.addEventListener('click', function(){
-    console.log('hit');
-});
+playerHit.addEventListener('click', playerHitCard);
 
 playerStay.addEventListener('click', function(){
     console.log('stay');
