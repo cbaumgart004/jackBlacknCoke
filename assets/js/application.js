@@ -67,7 +67,7 @@ const dealCards = function () {
             }
         }).then (function (data) {
             for (i=0; i<=1; i++) {
-            
+                dealerCards[i] = data.cards[i];
             };
             dealerHand(data);
             
@@ -88,7 +88,7 @@ const dealCards = function () {
             }
         }).then (function (data) {
             for (i=0; i<=1; i++) {
-            
+                playerCards[i] = data.cards[i];
             };
             
             playerHand(data);
@@ -100,8 +100,10 @@ const dealCards = function () {
 };
 
 const dealerHand = function(data) {
-    for(i = 0; i <=1; i++) {
-            dealerCards[i] = data.cards[i];
+    let dealerTotal = 0; 
+    for(i = 0; i <dealerCards.length; i++) {
+
+        
             if (dealerCards[i].value === "JACK"|| 
                 dealerCards[i].value === "QUEEN"|| 
                 dealerCards[i].value === "KING") {
@@ -111,18 +113,20 @@ const dealerHand = function(data) {
             } else {
             dealerCards[i].value = parseInt(dealerCards[i].value);
             };
-            
+            dealerTotal += dealerCards[i].value;
+    
             }
             dealerCards[1].state = 'faceDown';
             localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-            
+            console.log(`Dealer Shows ${dealerTotal}`);
             renderDealerCards();
         };
 
 const playerHand = function(data) {
-    for(i=0; i<=1; i++) {
+    let playerTotal = 0;
+    for(i = 0; i < playerCards.length; i++) {
     
-    playerCards[i] = data.cards[i];
+    
     //Turn card values into integers
     if (playerCards[i].value === "JACK"|| 
         playerCards[i].value === "QUEEN"|| 
@@ -133,12 +137,14 @@ const playerHand = function(data) {
     } else {
     playerCards[i].value = parseInt(playerCards[i].value);
     };
-    
+    playerTotal += playerCards[i].value;
     };
+    console.log(playerTotal);
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
+    localStorage.setItem('playerTotal', playerTotal);
     
     
-    let playerTotal = playerCards[0].value + playerCards[1].value;
+    
     if (playerTotal === 21) {
         alert ('Blackjack');
     };
@@ -181,8 +187,7 @@ const renderDealerCards = function () {
         showDealerCards.appendChild(img);
         
     };
-    let dealerTotal = dealerCards[0].value + dealerCards[1].value;
-    console.log(`Dealer Shows ${dealerTotal}`);
+    
 };
 
 /*const playerHit = function () {
@@ -198,31 +203,21 @@ const renderDealerCards = function () {
             }
         }).then (function (data) {
             playerHand.push(data);
-            //dealerHand(data);
             playerHand(data);
         })
         .catch(function(error) {
+            console.log(error);
             alert (`Unable to connect to Deck of Cards API`);
         });
 };*/
-/*const renderDealerCards = function () {
-    for (i=0; i < dealerCards.length; i++) {
-        const img = document.createElement('img');
-        img.src = dealerCards[i].image;
-        
-        img.alt = `This card is ${dealerCards[i].code}`;
-        img.textContent = dealerCards[i].code;
-        console.log(`cards to be rendered: ${dealerCards[i].code}`);
-        console.log(dealerCards.length);
-        showDealerCards.appendChild(img);
-    }
-};*/
+
 
 const tableClear = function () {
     for (i=0; i < playerCards.length; i++) {
         let childElement = document.getElementById(`playerCard${i}`);
-        console.log(childElement.id);
+        console.log(childElement);
         childElement.innerHTML = "";
+        childElement.remove();
     }
 
     showPlayerCards.innerHTML = ''; // Clear previous cards
