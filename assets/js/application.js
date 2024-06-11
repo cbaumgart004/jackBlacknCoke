@@ -19,7 +19,7 @@ const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 //console.log(dealerCards[0].code, dealerCards[1].code);
 //TODO: On open fetch request Deck of Cards API with a "New" and shuffle
 //tokens expire after 2 weeks, this ensures a new token is created on game start
-
+const apiCards = document.querySelectorAll('.api-card');
 //TODO: fetch request to draw a card.  We will create a "deal" function later
 
 const shuffleCards = function () {
@@ -124,7 +124,7 @@ const renderPlayerCards = function () {
                     <img src="${playerCards[i].image}" alt="This card is ${playerCards[i].code}" class="card-img">
                 </section>
                 <section class="card-back">
-                    <p class="card-body">Card back</p>
+                    <p class="card-body"></p>
                 </section>
             </div>`;
         card.addEventListener('click', () => {
@@ -146,7 +146,7 @@ const renderDealerCards = function () {
                     <img src="${dealerCards[i].image}" alt="This card is ${dealerCards[i].code}" class="card-img">
                 </section>
                 <section class="card-back">
-                    <p class="card-body">Card back</p>
+                    <p class="card-body"></p>
                 </section>
             </div>`;
         card.addEventListener('click', () => {
@@ -155,6 +155,15 @@ const renderDealerCards = function () {
         showDealerCards.appendChild(card);
     }
 };
+
+apiCards.forEach(card => {
+    card.classList.add('card-back'); // Add a CSS class
+    // Alternatively, you can directly apply styles
+     card.style.backgroundImage = "url('../assets/images/cardback.png')";
+     card.style.backgroundSize = "cover";
+     card.style.backgroundPosition = "center";
+     card.style.borderRadius = "15px";
+});
 //TODO: Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
@@ -175,24 +184,4 @@ playerDoubleDown.addEventListener('click', function(){
 
 playerSplit.addEventListener('click', function(){
     console.log('split');
-});
-
-playerClear.addEventListener('click', tableClear);
-
-
-//localStorage.clear();
-document.addEventListener('DOMContentLoaded', () => {
-    const card = document.getElementById('card');
-    
-    card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const card2 = document.getElementById('card2');
-    
-    card2.addEventListener('click', () => {
-        card2.classList.toggle('flipped');
-    });
 });

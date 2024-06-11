@@ -1,4 +1,4 @@
-*, *::before, *::after{
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
 }
@@ -8,140 +8,128 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh; /* Use 100vh for full heigth of the viewport */
-    width: 100vw; /* Use 100vw for full width of the viewport */
+    height: 100vh;
+    width: 100vw;
     display: grid;
-    place-items: left;
     color: white;
 }
 
-.card-container{
-    display:flex;
-    gap: 0;
+.card-container {
+    display: flex;
+    gap: 10px;
     justify-content: flex-start;
     align-items: center;
     overflow-x: auto;
+    flex-wrap: nowrap;
 }
 
+.card,
+.card2 {
+    width: 120px;
+    height: 168px;
+    flex-shrink: 0;
+    perspective: 1000px;
+    margin: 10px;
+    display: inline-block;
+    position: relative;
+}
 
-.login-page{
-    color: white;
-    border-radius: 5px;
+.card-content,
+.card-content2 {
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card.flipped .card-content,
+.card2.flipped .card-content2 {
+    transform: rotateY(.5turn);
+}
+
+.card-front,
+.card-back,
+.card-front2,
+.card-back2 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2em;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.card-front,
+.card-front2 {
     background: linear-gradient(to right, #000000, #80c6ff);
+    border-radius: 15px;
 }
 
-.game-page{
-    color: white;
-    border-radius: 10px;
-    text-decoration: underline black;
-    
+.card-title,
+.card-title2 {
+    font-size: 16px;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.btn{
+.card-body,
+.card-body2,
+.card-subtitle,
+.card-subtitle2 {
+    transform: translateZ(4rem);
+}
+
+.card-back,
+.card-back2 {
+     /* Add styles for the back of the cards */
+     background-image: url('../images/cardback.png'); /* Adjust the path as needed */
+     background-size: cover;
+     background-position: center;
+     border-radius: 15px; /* Adjust as needed */
+}
+
+
+/* Additional styles for game layout */
+.gameTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.dealerCards, .playerCards {
+    display: flex;
+    gap: 10px;
+}
+
+.playerButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
     background: linear-gradient(to left, #000000, #80c6ff);
     color: white;
     border-radius: 15px;
     border: 2px solid rgb(0, 0, 0);
-}
-
-
-
-/*TEST*/
-
-/*.background-img{
-    background-image: url('../images/Future-casino.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
-}*/
-
-/*TEST*/
-
-
-
-.card, 
-.card2{
-    width: 150px; 
-    height: 210px; 
-    flex-shrink: 0; /* Allow the cards to grow to occupy all available space */
-    perspective: 1000px;
-    margin-left: 15px;
-}
-
-.card-content, 
-.card-content2{
-    text-align: center;
-    position: relative;
-    padding: 5em;
-    transition: transform 3s;
-    background: pink;
-    transform-style: preserve-3d;
-    border-radius: 25px;
-    color: rgb(255, 255, 255);
-}
-
-
-.card.flipped .card-content, 
-.card2.flipped .card-content2{
-    transform: rotateY(.5turn);
-}
-
-
-.card-front,
-.card-back{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2em;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-}
-
-.card-front2,
-.card-back2{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2em;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-}
-
-.card-front, 
-.card-front2{
-    background: linear-gradient(to right, #000000, #80c6ff);
-    border-radius: 25px;
-}
-
-.card-title, 
-.card-title2{
-   font-size: 16px;
-   max-width: 90%;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
-}
-
-.card-body, 
-.card-body2{
-    transform: translateZ(4rem);
-    
-}
-
-.card-subtitle, 
-.card-subtitle2{
-    transform: translateZ(4rem);
-}
-
-.card-back, 
-.card-back2{
-    transform: rotateY(.5turn);
-    background: lightblue;
-    border-radius: 25px;
+    padding: 10px 20px;
 }
 
