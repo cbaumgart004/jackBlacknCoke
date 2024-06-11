@@ -224,6 +224,47 @@ const tableClear = function () {
         console.log(childElement.id);
         childElement.innerHTML = "";
     }
+
+    showPlayerCards.innerHTML = ''; // Clear previous cards
+    for (let i = 0; i < playerCards.length; i++) {
+        const card = document.createElement('article');
+        card.classList.add('card');
+        card.innerHTML = `
+            <div class="card-content">
+                <section class="card-front">
+                    <img src="${playerCards[i].image}" alt="This card is ${playerCards[i].code}" class="card-img">
+                </section>
+                <section class="card-back">
+                    <p class="card-body">Card back</p>
+                </section>
+            </div>`;
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        showPlayerCards.appendChild(card);
+    }
+};
+
+
+const renderDealerCards = function () {
+    showDealerCards.innerHTML = ''; // Clear previous cards
+    for (let i = 0; i < dealerCards.length; i++) {
+        const card = document.createElement('article');
+        card.classList.add('card');
+        card.innerHTML = `
+            <div class="card-content">
+                <section class="card-front">
+                    <img src="${dealerCards[i].image}" alt="This card is ${dealerCards[i].code}" class="card-img">
+                </section>
+                <section class="card-back">
+                    <p class="card-body">Card back</p>
+                </section>
+            </div>`;
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        showDealerCards.appendChild(card);
+    }
 };
 //TODO: Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
