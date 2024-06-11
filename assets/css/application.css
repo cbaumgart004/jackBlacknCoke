@@ -3,19 +3,74 @@
     margin: 0;
 }
 
-body{
-    height: 100vh;
+body {
+    background-image: url('../images/Future-casino.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh; /* Use 100vh for full heigth of the viewport */
+    width: 100vw; /* Use 100vw for full width of the viewport */
     display: grid;
-    place-items: center;
+    place-items: left;
+    color: white;
 }
 
-.card{
-    width: 400px;
+.card-container{
+    display:flex;
+    gap: 0;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+}
+
+
+.login-page{
+    color: white;
+    border-radius: 5px;
+    background: linear-gradient(to right, #000000, #80c6ff);
+}
+
+.game-page{
+    color: white;
+    border-radius: 10px;
+    text-decoration: underline black;
+    
+}
+
+.btn{
+    background: linear-gradient(to left, #000000, #80c6ff);
+    color: white;
+    border-radius: 15px;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+
+
+/*TEST*/
+
+/*.background-img{
+    background-image: url('../images/Future-casino.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}*/
+
+/*TEST*/
+
+
+
+.card, 
+.card2{
+    width: 150px; 
+    height: 210px; 
+    flex-shrink: 0; /* Allow the cards to grow to occupy all available space */
     perspective: 1000px;
+    margin-left: 15px;
 }
 
-
-.card-content{
+.card-content, 
+.card-content2{
     text-align: center;
     position: relative;
     padding: 5em;
@@ -23,11 +78,15 @@ body{
     background: pink;
     transform-style: preserve-3d;
     border-radius: 25px;
+    color: rgb(255, 255, 255);
 }
 
-.card.flipped .card-content{
+
+.card.flipped .card-content, 
+.card2.flipped .card-content2{
     transform: rotateY(.5turn);
 }
+
 
 .card-front,
 .card-back{
@@ -41,26 +100,48 @@ body{
     transform-style: preserve-3d;
 }
 
-.card-front{
-    background: lightgreen;
+.card-front2,
+.card-back2{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2em;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.card-front, 
+.card-front2{
+    background: linear-gradient(to right, #000000, #80c6ff);
     border-radius: 25px;
 }
 
-.card-title{
-    font-size: 1rem;
-    transform: translateZ(6rem);
+.card-title, 
+.card-title2{
+   font-size: 16px;
+   max-width: 90%;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 
-.card-body{
+.card-body, 
+.card-body2{
+    transform: translateZ(4rem);
+    
+}
+
+.card-subtitle, 
+.card-subtitle2{
     transform: translateZ(4rem);
 }
 
-.card-subtitle{
-    transform: translateZ(4rem);
-}
-
-.card-back{
+.card-back, 
+.card-back2{
     transform: rotateY(.5turn);
     background: lightblue;
     border-radius: 25px;
 }
+
