@@ -34,6 +34,8 @@ body {
     position: relative;
 }
 
+
+
 .card-content,
 .card-content2 {
     width: 100%;
@@ -60,19 +62,7 @@ body {
     transform: rotateY(.5turn);
 }
 
-.card-front,
-.card-back,
-.card-front2,
-.card-back2 {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2em;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-}
+
 
 .card-front,
 .card-front2 {
@@ -80,26 +70,10 @@ body {
     border-radius: 15px;
 }
 
-.card-title,
-.card-title2 {
-    font-size: 16px;
-    max-width: 90%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.card-body,
-.card-body2,
-.card-subtitle,
-.card-subtitle2 {
-    transform: translateZ(4rem);
-}
-
 .card-back,
 .card-back2 {
      /* Add styles for the back of the cards */
-     background-image: url('../images/cardback.png'); /* Adjust the path as needed */
+     /*background-image: url('../images/cardback.png'); */
      background-size: cover;
      background-position: center;
      border-radius: 15px; /* Adjust as needed */
@@ -129,7 +103,6 @@ body {
     background: linear-gradient(to left, #000000, #80c6ff);
     color: white;
     border-radius: 15px;
-    border: 2px solid rgb(0, 0, 0);
     padding: 10px 20px;
 }
 
