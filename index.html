@@ -25,10 +25,11 @@
         <div class="modal-content">
             <div class="box">
                 <p>Enter login information</p>
+                <br>
 
                 <div class="container">
                     <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="username" placeholder="Username">
+                        <input class="input" type="username" id="username" placeholder="Username">
                         <span class="icon is-small is-left">
                             <i class="fas fa-envelope"></i>
                         </span>
@@ -39,19 +40,74 @@
                 </div>
                 <div class="container">
                     <p class="control has-icons-left">
-                        <input class="input" type="password" placeholder="Password">
+                        <input class="input" type="password" id="password" placeholder="Password">
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
                         </span>
                     </p>
                 </div>
+                <br>
+                
+                <br>
+                <div class="control">
+                    <div class="select" id="numberOfDecks">
+                        <select>
+                            <option>Number of Decks</option>
+                            <option>1 Deck</option>
+                            <option>2 Decks</option>
+                            <option>3 Decks</option>
+                            <option>4 Decks</option>
+                            <option>5 Decks</option>
+                            <option>6 Decks</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
                 <div class="container">
                     <p class="control">
-                        <button class="button is-success">
+                        <button class="button is-success" id="loginBtn">
                             Login
                         </button>
                     </p>
                 </div>
+                <br>
+                <div class="box">
+                    <p>Create Account</p>
+                    <br>
+                    <div class="control">
+                        <input class="input" type="text" id="first-name" placeholder="First Name">
+                      </div>
+                      <div class="control">
+                        <input class="input" type="text" id="last-name" placeholder="Last Name">
+                      </div>
+                      <br>
+                    <div class="container">
+                        <p class="control has-icons-left has-icons-right">
+                            <input class="input" type="username" id="create-username" placeholder="Create Username">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <span class="icon is-small is-right">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="container">
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" id="create-password" placeholder=" Create Password">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <br>
+                    <div class="container">
+                        <p class="control">
+                            <button class="button is-success" id="submitBtn">
+                                Submit
+                            </button>
+                        </p>
+                    </div>
 
 
 
