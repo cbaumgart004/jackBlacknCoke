@@ -39,3 +39,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    // Define variables from HTML
+    const usernameInput = document.getElementById('#username');
+    const passwordInput = document.getElementById('#password');
+    const numberOfDecks = document.getElementById('#numberOfDecks');
+    const loginButton = document.getElementById('#loginBtn');
+    const firstNameInputEl = document.getElementById('#first-name');
+    const lastNameInputEl = document.getElementById('#last-name');
+    const createUserNameInput = document.getElementById('#create-username');
+    const createPasswordInput = document.getElementById('#create-password')
+    const submitButton = document.getElementById('#submitBtn');
+
+    //let userArray = JSON.parse(localStorage.getItem('userArray'))||[];
+
+    const userArray = [
+        {
+            username: "username",
+            firstName: "first-name",
+            lastName: "last-name",
+            deckNum: "numberOfDecks",
+            password: "password",
+            createUserName: "create-username",
+            createPassword: "create-password",
+        }
+    ];
+
+    function saveUserInformationToStorage(userArray) {
+        localStorage.setItem('userArray', JSON.stringify(userArray));
+    }
+
+
+
+
+
+
+
+    //loginButton.addEventListener('click', function (event) {
+        //event.preventDefault();
+
+        //const username = usernameInput.value;
+        //const password = passwordInput.value;
+        //const decks = numberOfDecks.value;
+
+        //if (username === '') {
+            //displayMessage('error', 'username cannot be blank');
+        //} else if (password === '') {
+            //displayMessage('error', 'password cannot be blank');
+        //} else if (decks === '') {
+            //displayMessage('error', 'please select number of decks');
+        //} else {
+            //this.displayMessage('success', 'Enjoy your game!')
+
+            //localStorage.setItem('username', username);
+            //localStorage.setItem('password', password);
+        //}
+
+    //});
+
+
+
+
