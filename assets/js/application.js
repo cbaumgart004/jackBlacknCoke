@@ -12,7 +12,7 @@ const playerClear = document.getElementById('clear');
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
 
-const deckId = localStorage.getItem('deckId');
+let deckId = localStorage.getItem('deckId');
 let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
 //console.log(playerCards[0].code, playerCards[1].code);
 let dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
@@ -43,11 +43,12 @@ const shuffleCards = function () {
             }
         }).then (function (data) {
             console.log (data.deck_id);
-            const deckId = data.deck_id;
+            deckId = data.deck_id;
             console.log(deckId);
             localStorage.setItem('deckId', deckId);
         })
-        .catch(function() {
+        .catch(function(error) {
+            console.log(error);
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
@@ -103,142 +104,129 @@ const dealCards = function () {
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
+//pass all cards through to give them numeric values
+const calculateCardValue = function(card) {
+    if (card.value === "JACK" || card.value === "QUEEN" || card.value === "KING") {
+        return 10;
+    } else if (card.value === "ACE") {
+        return 11;
+    } else {
+        return parseInt(card.value);
+    }
+};
+
+const calculateTotalAndSave = function(cards, totalKey) {
+    let total = 0;
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].value = calculateCardValue(cards[i]);
+        total += cards[i].value;
+    }
+
+    localStorage.setItem(totalKey, total);
+    localStorage.setItem(totalKey.replace('Total', 'Cards'), JSON.stringify(cards));
+    
+    return total;
+};
 
 const dealerHand = function(data) {
-    let dealerTotal = 0; 
-    for(i = 0; i <dealerCards.length; i++) {
-
-        
-            if (dealerCards[i].value === "JACK"|| 
-                dealerCards[i].value === "QUEEN"|| 
-                dealerCards[i].value === "KING") {
-                dealerCards[i].value = parseInt(10);
-            } else if (dealerCards[i].value === "ACE"){
-                dealerCards[i].value = parseInt(11);
-            } else {
-            dealerCards[i].value = parseInt(dealerCards[i].value);
-            };
-            dealerTotal += dealerCards[i].value;
-    
-            }
-            dealerCards[1].state = 'faceDown';
-            localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-            console.log(`Dealer Shows ${dealerTotal}`);
-            renderDealerCards();
-        };
+    let dealerTotal = calculateTotalAndSave(dealerCards, 'dealerTotal');
+    dealerCards[0].state = 'faceDown';
+    console.log(`Dealer Shows ${dealerTotal}`);
+    renderDealerCards();
+};
 
 const playerHand = function(data) {
-    let playerTotal = 0;
-    for(i = 0; i < playerCards.length; i++) {
-    
-    
-    //Turn card values into integers
-    if (playerCards[i].value === "JACK"|| 
-        playerCards[i].value === "QUEEN"|| 
-        playerCards[i].value === "KING") {
-        playerCards[i].value = parseInt(10);
-    } else if (playerCards[i].value === "ACE"){
-        playerCards[i].value = parseInt(11);
-    } else {
-    playerCards[i].value = parseInt(playerCards[i].value);
-    
-    
-    };
-    console.log(playerCards[i].value);
-    playerTotal += playerCards[i].value;
-    };
-    
-    console.log(playerTotal);
-    localStorage.setItem('playerCards', JSON.stringify(playerCards));
-    localStorage.setItem('playerTotal', playerTotal);
-    
-    
+    let playerTotal = calculateTotalAndSave(playerCards, 'playerTotal');
     
     if (playerTotal === 21) {
-        alert ('Blackjack');
-    };
+        alert('Blackjack');
+    }
     
-    console.log(`player has ${playerCards.length} cards`)
     console.log(`Player Shows ${playerTotal}`);
+    console.log(`Player has ${playerCards.length} cards`);
     renderPlayerCards();
     checkForBust(playerTotal);
 };
-
-const renderPlayerCards = function () {
-    
-    //showPlayerCards.empty();
-        //wipe the board
-        /*const childrenElements = showPlayerCards.children;
-        for (i = 0; i < childrenElements.length; i++) {
-            console.log(childrenElements.length);
-            childrenElements[i].innerHTML = '';
-        };*/
-        //Set the cards
-        for (i=0; i < playerCards.length; i++) {
-    
+//render cards function reduces repeated code
+const renderCards = function(cards, container, cardType) {
+    for (let i = 0; i < cards.length; i++) {
         const img = document.createElement('img');
-        img.setAttribute('id', `playerCard${i}`);
-        img.src = playerCards[i].image;
-        img.alt = `This card is ${playerCards[i].code}`;
-        img.classList.add('card');
-        if (!document.getElementById(`playerCard${i}`)) {
-            showPlayerCards.appendChild(img);
-        };
+        img.setAttribute('id', `${cardType}Card${i}`);
         
-    };
-    
-};
-const renderDealerCards = function () {
-    
-    for (let i=0; i < dealerCards.length; i++) {
-        const img = document.createElement('img');
-        img.setAttribute('id', `dealerCard${i}`);
-        if (i===1){
+        if (cardType === 'dealer' && i === 0 && cards[0].state === 'faceDown') {
             img.src = 'https://www.deckofcardsapi.com/static/img/back.png';
-        }else {
-            img.src = dealerCards[i].image;
+        } else {
+            img.src = cards[i].image;
         }
         
+        img.alt = `This card is ${cards[i].code}`;
         img.classList.add('card');
         
-        
-        
-        
-        showDealerCards.appendChild(img);
-    };
-    
-    
+        // Check if the card is already displayed
+        if (!document.getElementById(`${cardType}Card${i}`)) {
+            container.appendChild(img);
+        } else {
+            const existingImg = document.getElementById(`${cardType}Card${i}`);
+            existingImg.src = img.src; // Update the src attribute for face-up cards
+        }
+    }
 };
 
-const playerHitCard = function () {
-    const hitUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
-    fetch(hitUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            console.log(data.cards);
+const renderPlayerCards = function() {
+    renderCards(playerCards, showPlayerCards, 'player');
+};
+
+const renderDealerCards = function() {
+    renderCards(dealerCards, showDealerCards, 'dealer');
+};
+
+const hitCard = function (playerType) {
+    const url = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
+
+    fetch(url).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            alert(`Error: ${response.statusText}`);
+        }
+    }).then(function (data) {
+        console.log(data.cards);
+        if (playerType === 'player') {
             playerCards.push(data.cards[0]);
             localStorage.setItem('playerCards', JSON.stringify(playerCards));
-            console.log
             console.log(`player has ${playerCards.length} cards`);
             console.log(`player cards: ${playerCards}`);
             playerHand(data);
-        })
-        .catch(function(error) {
-            console.log(error);
-            alert (`Unable to connect to Deck of Cards API`);
-        });
-};
+        } else if (playerType === 'dealer') {
+            dealerCards.push(data.cards[0]);
+            localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
+            console.log(`dealer has ${dealerCards.length} cards`);
+            console.log(`dealer cards: ${dealerCards}`);
+            dealerHand(data);
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+        alert(`Unable to connect to Deck of Cards API`);
+    });
+}; 
 
 const checkForBust = function(playerTotal) {
     if (playerTotal > 21) {
-        alert('Player went bust');
+        playerTotal = 0;
+        for (let i = 0; i < playerCards.length; i++) {
+            if (playerCards[i].value === 11) {
+                playerCards[i].value = 1;
+                console.log(`Ace at index ${i} is now worth 1`);
+            }
+            playerTotal += playerCards[i].value
+        }
+        localStorage.setItem('playerTotal', playerTotal);
+        console.log(playerTotal);
+        if(playerTotal > 21) {
+            alert('Player went bust');
+        }
+        
     }
 };
 
@@ -247,47 +235,31 @@ const tableClear = function () {
     playerCards = [];
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-    for (i=0; i < playerCards.length; i++) {
-        let childElement = document.getElementById(`playerCard${i}`);
-        console.log(childElement);
-        childElement.innerHTML = "";
-        childElement.remove();
-    }
-
     showPlayerCards.innerHTML = ''; // Clear previous cards
     showDealerCards.innerHTML = '';
-    
-    for (let i = 0; i < playerCards.length; i++) {
-        const card = document.createElement('article');
-        card.classList.add('card');
-        card.innerHTML = `
-            <div class="card-content">
-                <section class="card-front">
-                    <img src="${playerCards[i].image}" alt="This card is ${playerCards[i].code}" class="card-img">
-                </section>
-                <section class="card-back">
-                    <p class="card-body">Card back</p>
-                </section>
-            </div>`;
-        card.addEventListener('click', () => {
-            card.classList.toggle('flipped');
-        });
-        showPlayerCards.appendChild(card);
-    }
 };
-
-
 
 //TODO: Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
 playerDeal.addEventListener('click', dealCards);
 
-
-playerHit.addEventListener('click', playerHitCard);
+playerHit.addEventListener('click', function () {
+    hitCard('player');
+});
 
 playerStay.addEventListener('click', function(){
     console.log('stay');
+    dealerCards[0].state = 'faceUp';
+    renderDealerCards();
+    let dealerTotal = localStorage.getItem('dealerTotal', 'dealerTotal')
+    console.log(`Dealer shows ${dealerTotal}`);
+    hitCard('dealer');
+        /*while (dealerTotal < 17) {
+            dealerHitCard();
+            dealerTotal = parseInt(localStorage.getItem('dealerTotal'));
+            console.log(`Dealer shows ${dealerTotal}`);
+        }*/
 });
 
 playerDoubleDown.addEventListener('click', function(){
@@ -300,21 +272,4 @@ playerSplit.addEventListener('click', function(){
 
 playerClear.addEventListener('click', tableClear);
 
-
-//localStorage.clear();
-/*document.addEventListener('DOMContentLoaded', () => {
-    const card = document.getElementById('card');
-    
-    card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const card2 = document.getElementById('card2');
-    
-    card2.addEventListener('click', () => {
-        card2.classList.toggle('flipped');
-    });
-});*/
 
