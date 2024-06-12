@@ -1,7 +1,5 @@
-
-
+//elements from html
 const playerShuffle1 = document.getElementById('shuffle');
-
 const playerDeal = document.getElementById('deal');
 const playerHit = document.getElementById('hit');
 const playerStay = document.getElementById('stay');
@@ -11,6 +9,7 @@ const playerClear = document.getElementById('clear');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
+const cardsRemaining = localStorage.getItem('cardsRemaining')||'';
 
 let deckId = localStorage.getItem('deckId');
 let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
@@ -42,9 +41,11 @@ const shuffleCards = function () {
                 alert(`Error: ${response.statusText}`);
             }
         }).then (function (data) {
-            console.log (data.deck_id);
+            console.log(data);
+            console.log(data.remaining);
             deckId = data.deck_id;
             console.log(deckId);
+            localStorage.setItem('cardsRemaining', data.remaining);
             localStorage.setItem('deckId', deckId);
         })
         .catch(function(error) {
@@ -104,26 +105,39 @@ const calculateTotalAndSave = function(cards, totalKey) {
 
     localStorage.setItem(totalKey, total);
     localStorage.setItem(totalKey.replace('Total', 'Cards'), JSON.stringify(cards));
-    
+    //console.log(`calculateTotalandSave ${dealerTotal}`)
     return total;
 };
 
 const dealerHand = function(data) {
     let dealerTotal = calculateTotalAndSave(dealerCards, 'dealerTotal');
-    dealerCards[0].state = 'faceDown';
+    let playerTotal = localStorage.getItem('playerTotal');
+    if (dealerCards[0].state !== 'faceUp') {
+        dealerCards[0].state = 'faceDown';
+    console.log(`dealerHand calculated total ${dealerTotal}`);
+    }
+    if (dealerTotal === 21) {
+        if (dealerTotal > playerTotal) {
+            alert(`Dealer Blackjack. Player Loses`);
+        } else {
+            alert(`Dealer Blackjack. Player Push`);
+        }
+    }
     console.log(`Dealer Shows ${dealerTotal}`);
+    //only hit more cards after Player presses Stay button
+    
+    
     renderDealerCards();
 };
 
 const playerHand = function(data) {
     let playerTotal = calculateTotalAndSave(playerCards, 'playerTotal');
     
-    if (playerTotal === 21) {
+    if (playerTotal === 21 && playerCards.size === 2) {
         alert('Blackjack');
     }
     
     console.log(`Player Shows ${playerTotal}`);
-    console.log(`Player has ${playerCards.length} cards`);
     renderPlayerCards();
     checkForBust(playerTotal);
 };
@@ -180,15 +194,46 @@ const hitCard = function (playerType) {
         } else if (playerType === 'dealer') {
             dealerCards.push(data.cards[0]);
             localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-            console.log(`dealer has ${dealerCards.length} cards`);
-            console.log(`dealer cards: ${dealerCards}`);
+            
             dealerHand(data);
+            updateDealerTotal(); // Update dealerTotal after each new card is drawn
         }
     })
     .catch(function (error) {
         console.log(error);
         alert(`Unable to connect to Deck of Cards API`);
     });
+};
+
+const updateDealerTotal = function() {
+    let dealerTotal = calculateTotalAndSave(dealerCards, 'dealerTotal');
+    console.log(`Updated Dealer Shows ${dealerTotal}`);
+    
+    console.log(`updateDealer Total: dealer has ${dealerCards.length} cards`)
+    if (dealerTotal < 17) {
+        hitCard('dealer');
+    }
+    if (dealerTotal>21) {
+        dealerTotal = 0;
+        for (let i = 0; i < dealerCards.length; i++) {
+            if (dealerCards[i].value === 11) {
+                dealerCards[i].value = 1;
+                console.log(`Ace at index ${i} is now worth 1`);
+            }
+            dealerTotal += dealerCards[i].value
+        }
+        dealerTotal = localStorage.setItem('dealerTotal', dealerTotal);
+        if (dealerTotal < 17) {
+            hitCard ('dealer');
+        } else {
+            alert (`Dealer Bust: Player Wins`);
+        }
+    }
+    if (dealerTotal>= 17) {
+        checkForWin();
+    }
+    renderDealerCards();
+    
 }; 
 
 const checkForBust = function(playerTotal) {
@@ -197,7 +242,6 @@ const checkForBust = function(playerTotal) {
         for (let i = 0; i < playerCards.length; i++) {
             if (playerCards[i].value === 11) {
                 playerCards[i].value = 1;
-                console.log(`Ace at index ${i} is now worth 1`);
             }
             playerTotal += playerCards[i].value
         }
@@ -210,13 +254,48 @@ const checkForBust = function(playerTotal) {
     }
 };
 
+
+const checkForWin = function () {
+    let playerTotal = parseInt(localStorage.getItem('playerTotal'));
+    let dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+    if (playerTotal > dealerTotal) {
+        alert(`Player Wins`)
+    } else if (playerTotal === dealerTotal) {
+        alert (`Player Push`);
+    } else {
+        alert (`player loses`);
+    };
+
+    
+};
 const tableClear = function () {
     dealerCards = [];
     playerCards = [];
+    
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
     showPlayerCards.innerHTML = ''; // Clear previous cards
     showDealerCards.innerHTML = '';
+};
+
+//I need to call player stay function if player clicks "double down" so there's a separate function that can be called by either event listener
+const playerStayLogic = function () {
+ //set player state to 'stay' so dealer will take more cards
+    
+    dealerCards[0].state = 'faceUp';
+    renderDealerCards();
+    let dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+
+    if (dealerTotal >= 17) {
+    console.log (`dealer stays`);
+    checkForWin();
+    return
+    } else {
+    hitCard('dealer');
+    dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+    console.log(`after hit card dealer total ${dealerTotal}`)
+;}
+    
 };
 
 //TODO: Add event listener to buttons for gameplay
@@ -228,22 +307,12 @@ playerHit.addEventListener('click', function () {
     hitCard('player');
 });
 
-playerStay.addEventListener('click', function(){
-    console.log('stay');
-    dealerCards[0].state = 'faceUp';
-    renderDealerCards();
-    let dealerTotal = localStorage.getItem('dealerTotal', 'dealerTotal')
-    console.log(`Dealer shows ${dealerTotal}`);
-    hitCard('dealer');
-        /*while (dealerTotal < 17) {
-            dealerHitCard();
-            dealerTotal = parseInt(localStorage.getItem('dealerTotal'));
-            console.log(`Dealer shows ${dealerTotal}`);
-        }*/
-});
+playerStay.addEventListener('click', playerStayLogic);
 
 playerDoubleDown.addEventListener('click', function(){
     console.log('Double Down');
+    hitCard('player');
+    playerStayLogic();
 });
 
 playerSplit.addEventListener('click', function(){
