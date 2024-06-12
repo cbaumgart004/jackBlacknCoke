@@ -56,53 +56,33 @@ const shuffleCards = function () {
 console.log(deckId);
 
 
-const dealCards = function () {
+const dealCards = function() {
     const dealDealerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
-    const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`
-    fetch(dealDealerUrl)
-        .then (function (response) {
-            if (response.ok) {
-                console.log(response);
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            for (i=0; i<=1; i++) {
-                dealerCards[i] = data.cards[i];
-                
-            };
-            console.log(data);
-            dealerHand(data);
-            
-        })
-        .catch(function(error) {
-            console.log(error);
-            alert (`Unable to connect to Deck of Cards API`);
-        });
+    const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
+    //I really need to use arrow function syntax more.
+    const dealCard = (url, cardsArray, handFunction) => {
+        fetch(url)
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(function(data) {
+                for (let i = 0; i < 2; i++) {
+                    cardsArray[i] = data.cards[i];
+                }
+                handFunction(data);
+            })
+            .catch(function(error) {
+                console.error(error);
+                alert(`Unable to connect to Deck of Cards API`);
+            });
+    };
 
-        fetch(dealPlayerUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            for (i=0; i<=1; i++) {
-                playerCards[i] = data.cards[i];
-                console.log(playerCards[i]);
-            };
-            
-            playerHand(data);
-        })
-        .catch(function(error) {
-            console.log(error);
-            alert (`Unable to connect to Deck of Cards API`);
-        });
+    dealCard(dealDealerUrl, dealerCards, dealerHand);
+    dealCard(dealPlayerUrl, playerCards, playerHand);
 };
 //pass all cards through to give them numeric values
 const calculateCardValue = function(card) {
