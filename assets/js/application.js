@@ -1,234 +1,52 @@
-
-
+//elements from html
 const playerShuffle1 = document.getElementById('shuffle');
-
 const playerDeal = document.getElementById('deal');
 const playerHit = document.getElementById('hit');
 const playerStay = document.getElementById('stay');
 const playerDoubleDown = document.getElementById('doubleDown');
 const playerSplit = document.getElementById('split');
 const playerClear = document.getElementById('clear');
+const gameTable = document.getElementById('gameTable');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
+const cardsRemaining = localStorage.getItem('cardsRemaining')||'';
 
-const deckId = localStorage.getItem('deckId');
-const playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
+//initialize variables for gameplay
+let splitCount = localStorage.getItem('localStorage');
+if (!splitCount) {
+    splitCount = localStorage.setItem('splitCount', 0);
+}
+let deckId = localStorage.getItem('deckId');
+let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
 //console.log(playerCards[0].code, playerCards[1].code);
-const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
-//console.log(dealerCards[0].code, dealerCards[1].code);
-//TODO: On open fetch request Deck of Cards API with a "New" and shuffle
-//tokens expire after 2 weeks, this ensures a new token is created on game start
-
-//TODO: fetch request to draw a card.  We will create a "deal" function later
-
-const shuffleCards = function () {
-    const shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`;
-
-    fetch(shuffleUrl)
-        .then (function (response) {
-            if (response.ok) {
-                console.log(response);
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            console.log (data.deck_id);
-            const deckId = data.deck_id;
-            console.log(deckId);
-            localStorage.setItem('deckId', deckId);
-        })
-        .catch(function() {
-            alert (`Unable to connect to Deck of Cards API`);
-        });
-};
-
-console.log(deckId);
-
-
-const dealCards = function () {
-    const dealUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`;
-
-    fetch(dealUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            for (i=0; i<=3; i++) {
-            console.log (data.cards[i].code);
-            };
-            //dealerHand(data);
-            playerHand(data);
-        })
-        .catch(function(error) {
-            alert (`Unable to connect to Deck of Cards API`);
-        });
-};
-
-const dealerHand = function(data) {
-    for(i = 0; i <=1; i++) {
-            dealerCards[i] = data.cards[i];
-            console.log(dealerCards[i].image);
-            }
-            localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-            renderDealerCards();
-        };
-
-const playerHand = function(data) {
-    for(i = 2, j=0; i <=3, j<=1; i++, j++) {
-    
-    playerCards[j] = data.cards[i];
-    //Turn card values into integers
-    if (playerCards[j].value === "JACK"|| 
-        playerCards[j].value === "QUEEN"|| 
-        playerCards[j].value === "KING") {
-        playerCards[j].value = parseInt(10);
-    } else if (playerCards[j].value === "ACE"){
-        playerCards[j].value = parseInt(11);
-    } else {
-    playerCards[j].value = parseInt(playerCards[j].value);
-    };
-    
-    console.log(j);
-    console.log(playerCards[j]);
-    console.log(playerCards[j].value);
-    
-    };
-    localStorage.setItem('playerCards', JSON.stringify(playerCards));
-    console.log(playerCards[0].code);
-    console.log(`Card 1: ${playerCards[0].value} + Card 2: ${playerCards[1].value} = `)
-    let playerTotal = playerCards[0].value + playerCards[1].value;
-    if (playerTotal === 21) {
-        alert ('Blackjack');
-    };
-    console.log(playerTotal);
-    renderPlayerCards();
-};
-
-const renderPlayerCards = function () {
-
-    showPlayerCards.innerHTML = ''; // Clear previous cards
-    for (let i = 0; i < playerCards.length; i++) {
-        const card = document.createElement('article');
-        card.classList.add('card');
-        card.innerHTML = `
-            <div class="card-content">
-                <section class="card-front">
-                    <img src="${playerCards[i].image}" alt="This card is ${playerCards[i].code}" class="card-img">
-                </section>
-                <section class="card-back">
-                    <p class="card-body">Card back</p>
-                </section>
-            </div>`;
-        card.addEventListener('click', () => {
-            card.classList.toggle('flipped');
-        });
-        showPlayerCards.appendChild(card);
-    }
-};
-
-
-const renderDealerCards = function () {
-    showDealerCards.innerHTML = ''; // Clear previous cards
-    for (let i = 0; i < dealerCards.length; i++) {
-        const card = document.createElement('article');
-        card.classList.add('card');
-        card.innerHTML = `
-            <div class="card-content">
-                <section class="card-front">
-                    <img src="${dealerCards[i].image}" alt="This card is ${dealerCards[i].code}" class="card-img">
-                </section>
-                <section class="card-back">
-                    <p class="card-body">Card back</p>
-                </section>
-            </div>`;
-        card.addEventListener('click', () => {
-            card.classList.toggle('flipped');
-        });
-        showDealerCards.appendChild(card);
-    }
-};
-//TODO: Add event listener to buttons for gameplay
-playerShuffle1.addEventListener('click', shuffleCards);
-
-playerDeal.addEventListener('click', dealCards);
-
-
-playerHit.addEventListener('click', function(){
-    console.log('hit');
-});
-
-playerStay.addEventListener('click', function(){
-    console.log('stay');
-});
-
-playerDoubleDown.addEventListener('click', function(){
-    console.log('Double Down');
-});
-
-playerSplit.addEventListener('click', function(){
-    console.log('split');
-});
-
-playerClear.addEventListener('click', tableClear);
-
-
-//localStorage.clear();
-document.addEventListener('DOMContentLoaded', () => {
-    const card = document.getElementById('card');
-    
-    card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const card2 = document.getElementById('card2');
-    
-    card2.addEventListener('click', () => {
-        card2.classList.toggle('flipped');
-    });
-});
-
-
-
-const playerShuffle1 = document.getElementById('shuffle');
-
-const playerDeal = document.getElementById('deal');
-const playerHit = document.getElementById('hit');
-const playerStay = document.getElementById('stay');
-const playerDoubleDown = document.getElementById('doubleDown');
-const playerSplit = document.getElementById('split');
-const playerClear = document.getElementById('clear');
-//variables for cards to render to html
-const showDealerCards = document.getElementById('dealerCards');
-const showPlayerCards = document.getElementById('playerCards');
-
-const deckId = localStorage.getItem('deckId');
-const playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
-//console.log(playerCards[0].code, playerCards[1].code);
-const dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
+let dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 console.log(`page open dealer cards: ${dealerCards}` )
 //console.log (dealerCards[0].image);
 //console.log(dealerCards[0].code, dealerCards[1].code);
-//TODO: On open fetch request Deck of Cards API with a "New" and shuffle
+// On open fetch request Deck of Cards API with a "New" and shuffle
 //tokens expire after 2 weeks, this ensures a new token is created on game start
-
+const apiCards = document.querySelectorAll('.api-card');
 //TODO: fetch request to draw a card.  We will create a "deal" function later
 
+apiCards.forEach(card => {
+    // Add a CSS class
+    card.classList.add('card-back');
+    // Alternatively, you can directly apply styles
+    card.style.backgroundImage = "url('../assets/images/cardback.png')";
+    card.style.backgroundSize = "cover";
+    card.style.backgroundPosition = "center";
+    card.style.borderRadius = "15px";
+});
+
 const shuffleCards = function () {
+    localStorage.getItem('deckId', 'deckId')
+    let shuffleUrl;
     if (!deckId) {
-    let shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`;
+    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=7`;
 } else {
-    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=1`;
-}
+    shuffleUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=7`;
+};
     fetch(shuffleUrl)
         .then (function (response) {
             if (response.ok) {
@@ -239,230 +57,291 @@ const shuffleCards = function () {
                 alert(`Error: ${response.statusText}`);
             }
         }).then (function (data) {
-            console.log (data.deck_id);
-            const deckId = data.deck_id;
+            console.log(data);
+            console.log(data.remaining);
+            deckId = data.deck_id;
             console.log(deckId);
+            localStorage.setItem('cardsRemaining', data.remaining);
             localStorage.setItem('deckId', deckId);
         })
-        .catch(function() {
+        .catch(function(error) {
+            console.log(error);
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
-
 console.log(deckId);
 
-
-const dealCards = function () {
+//deal the initial cards
+const dealCards = function() {
     const dealDealerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
-    const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`
-    fetch(dealDealerUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            for (i=0; i<=1; i++) {
-            
-            };
-            dealerHand(data);
-            
-        })
-        .catch(function(error) {
-            console.log(error);
-            alert (`Unable to connect to Deck of Cards API`);
-        });
+    const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
+    //I really need to use arrow function syntax more.
+    const dealCard = (url, cardsArray, handFunction) => {
+        fetch(url)
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(function(data) {
+                for (let i = 0; i < 2; i++) {
+                    cardsArray[i] = data.cards[i];
+                }
+                handFunction(data);
+            })
+            .catch(function(error) {
+                console.error(error);
+                alert(`Unable to connect to Deck of Cards API`);
+            });
+    };
+    //run this function twice, once for dealer, once for player
+    dealCard(dealDealerUrl, dealerCards, dealerHand);
+    dealCard(dealPlayerUrl, playerCards, playerHand);
+};
+//pass all cards through to give them numeric values
+const calculateCardValue = function(card) {
+    if (card.value === "JACK" || card.value === "QUEEN" || card.value === "KING") {
+        return 10;
+    } else if (card.value === "ACE") {
+        return 11;
+    } else {
+        return parseInt(card.value);
+    }
+};
 
-        fetch(dealPlayerUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            for (i=0; i<=1; i++) {
-            
-            };
-            
-            playerHand(data);
-        })
-        .catch(function(error) {
-            console.log(error);
-            alert (`Unable to connect to Deck of Cards API`);
-        });
+const calculateTotalAndSave = function(cards, totalKey) {
+    let total = 0;
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].value = calculateCardValue(cards[i]);
+        total += cards[i].value;
+    }
+
+    localStorage.setItem(totalKey, total);
+    localStorage.setItem(totalKey.replace('Total', 'Cards'), JSON.stringify(cards));
+    //console.log(`calculateTotalandSave ${dealerTotal}`)
+    return total;
 };
 
 const dealerHand = function(data) {
-    for(i = 0; i <=1; i++) {
-            dealerCards[i] = data.cards[i];
-            if (dealerCards[i].value === "JACK"|| 
-                dealerCards[i].value === "QUEEN"|| 
-                dealerCards[i].value === "KING") {
-                dealerCards[i].value = parseInt(10);
-            } else if (dealerCards[i].value === "ACE"){
-                dealerCards[i].value = parseInt(11);
-            } else {
-            dealerCards[i].value = parseInt(dealerCards[i].value);
-            };
-            
-            }
-            dealerCards[1].state = 'faceDown';
-            localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
-            
-            renderDealerCards();
-        };
+    let dealerTotal = calculateTotalAndSave(dealerCards, 'dealerTotal');
+    let playerTotal = localStorage.getItem('playerTotal');
+    if (dealerCards[0].state !== 'faceUp') {
+        dealerCards[0].state = 'faceDown';
+    console.log(`dealerHand calculated total ${dealerTotal}`);
+    }
+    //only call a blackjack on deal
+    if (dealerTotal === 21 && dealerCards.length === 2) {
+        if (dealerTotal > playerTotal) {
+            alert(`Dealer Blackjack. Player Loses`);
+        } else {
+            alert(`Dealer Blackjack. Player Push`);
+        }
+    }
+    console.log(`Dealer Shows ${dealerTotal}`);
+    //only hit more cards after Player presses Stay button
+    
+    
+    renderDealerCards();
+};
 
 const playerHand = function(data) {
-    for(i=0; i<=1; i++) {
+    let playerTotal = calculateTotalAndSave(playerCards, 'playerTotal');
+    //only call blackjack on deal
+    if (playerTotal === 21 && playerCards.size === 2) {
+        alert('Blackjack');
+    }
     
-    playerCards[i] = data.cards[i];
-    //Turn card values into integers
-    if (playerCards[i].value === "JACK"|| 
-        playerCards[i].value === "QUEEN"|| 
-        playerCards[i].value === "KING") {
-        playerCards[i].value = parseInt(10);
-    } else if (playerCards[i].value === "ACE"){
-        playerCards[i].value = parseInt(11);
-    } else {
-    playerCards[i].value = parseInt(playerCards[i].value);
-    };
-    
-    };
-    localStorage.setItem('playerCards', JSON.stringify(playerCards));
-    
-    
-    let playerTotal = playerCards[0].value + playerCards[1].value;
-    if (playerTotal === 21) {
-        alert ('Blackjack');
-    };
     console.log(`Player Shows ${playerTotal}`);
     renderPlayerCards();
+    checkForBust(playerTotal);
 };
-
-const renderPlayerCards = function () {
-    
-    //showPlayerCards.empty();
-        //wipe the board
-        /*const childrenElements = showPlayerCards.children;
-        for (i = 0; i < childrenElements.length; i++) {
-            console.log(childrenElements.length);
-            childrenElements[i].innerHTML = '';
-        };*/
-        //Set the cards
-        for (i=0; i < playerCards.length; i++) {
-    
+//render cards function reduces repeated code
+const renderCards = function(cards, container, cardType) {
+    for (let i = 0; i < cards.length; i++) {
         const img = document.createElement('img');
-        img.setAttribute('id', `playerCard${i}`);
-        img.src = playerCards[i].image;
-        img.alt = `This card is ${playerCards[i].code}`;
-        img.classList.add('card');
-        showPlayerCards.appendChild(img);
-    }
-    
-};
-const renderDealerCards = function () {
-    for (i=0; i < dealerCards.length; i++) {
-        const img = document.createElement('img');
-        img.setAttribute('id', `dealerCard${i}`);
-        if (i===1){
+        img.setAttribute('id', `${cardType}Card${i}`);
+        
+        if (cardType === 'dealer' && i === 0 && cards[0].state === 'faceDown') {
             img.src = 'https://www.deckofcardsapi.com/static/img/back.png';
-        }else {
-            img.src = dealerCards[i].image;
+        } else {
+            img.src = cards[i].image;
         }
         
+        img.alt = `This card is ${cards[i].code}`;
         img.classList.add('card');
-        showDealerCards.appendChild(img);
         
-    };
-    let dealerTotal = dealerCards[0].value + dealerCards[1].value;
-    console.log(`Dealer Shows ${dealerTotal}`);
+        // Check if the card is already displayed
+        if (!document.getElementById(`${cardType}Card${i}`)) {
+            container.appendChild(img);
+        } else {
+            const existingImg = document.getElementById(`${cardType}Card${i}`);
+            existingImg.src = img.src; // Update the src attribute for face-up cards
+        }
+    }
 };
 
-/*const playerHit = function () {
-    const hitUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
-    fetch(dealUrl)
-        .then (function (response) {
-            if (response.ok) {
-                
-                return response.json();
-                
-            } else {
-                alert(`Error: ${response.statusText}`);
-            }
-        }).then (function (data) {
-            playerHand.push(data);
-            //dealerHand(data);
+const renderPlayerCards = function() {
+    renderCards(playerCards, showPlayerCards, 'player');
+};
+
+const renderDealerCards = function() {
+    renderCards(dealerCards, showDealerCards, 'dealer');
+};
+
+const hitCard = function (playerType) {
+    const url = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
+
+    fetch(url).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            alert(`Error: ${response.statusText}`);
+        }
+    }).then(function (data) {
+        console.log(data.cards);
+        if (playerType === 'player') {
+            playerCards.push(data.cards[0]);
+            localStorage.setItem('playerCards', JSON.stringify(playerCards));
+            console.log(`player has ${playerCards.length} cards`);
+            console.log(`player cards: ${playerCards}`);
             playerHand(data);
-        })
-        .catch(function(error) {
-            alert (`Unable to connect to Deck of Cards API`);
-        });
-};*/
-/*const renderDealerCards = function () {
-    for (i=0; i < dealerCards.length; i++) {
-        const img = document.createElement('img');
-        img.src = dealerCards[i].image;
-        
-        img.alt = `This card is ${dealerCards[i].code}`;
-        img.textContent = dealerCards[i].code;
-        console.log(`cards to be rendered: ${dealerCards[i].code}`);
-        console.log(dealerCards.length);
-        showDealerCards.appendChild(img);
-    }
-};*/
+        } else if (playerType === 'dealer') {
+            dealerCards.push(data.cards[0]);
+            localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
+            
+            dealerHand(data);
+            updateDealerTotal(); // Update dealerTotal after each new card is drawn
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+        alert(`Unable to connect to Deck of Cards API`);
+    });
+};
 
-const tableClear = function () {
-    for (i=0; i < playerCards.length; i++) {
-        let childElement = document.getElementById(`playerCard${i}`);
-        console.log(childElement.id);
-        childElement.innerHTML = "";
+const updateDealerTotal = function() {
+    let dealerTotal = calculateTotalAndSave(dealerCards, 'dealerTotal');
+    console.log(`Updated Dealer Shows ${dealerTotal}`);
+    
+    console.log(`updateDealer Total: dealer has ${dealerCards.length} cards`)
+    if (dealerTotal < 17) {
+        hitCard('dealer');
+    }
+    if (dealerTotal>21) {
+        dealerTotal = 0;
+        for (let i = 0; i < dealerCards.length; i++) {
+            if (dealerCards[i].value === 11) {
+                dealerCards[i].value = 1;
+                console.log(`Ace at index ${i} is now worth 1`);
+            }
+            dealerTotal += dealerCards[i].value
+        }
+        dealerTotal = localStorage.setItem('dealerTotal', dealerTotal);
+        if (dealerTotal < 17) {
+            hitCard ('dealer');
+        } else {
+            alert (`Dealer Bust: Player Wins`);
+        }
+    }
+    if (dealerTotal>= 17) {
+        checkForWin();
+    }
+    renderDealerCards();
+    
+}; 
+
+const checkForBust = function(playerTotal) {
+    if (playerTotal > 21) {
+        playerTotal = 0;
+        for (let i = 0; i < playerCards.length; i++) {
+            if (playerCards[i].value === 11) {
+                playerCards[i].value = 1;
+            }
+            playerTotal += playerCards[i].value
+        }
+        localStorage.setItem('playerTotal', playerTotal);
+        console.log(playerTotal);
+        if(playerTotal > 21) {
+            alert('Player went bust');
+        }
+        
     }
 };
-//TODO: Add event listener to buttons for gameplay
+
+
+const checkForWin = function () {
+    let playerTotal = parseInt(localStorage.getItem('playerTotal'));
+    let dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+    if (playerTotal > dealerTotal) {
+        alert(`Player Wins`)
+    } else if (playerTotal === dealerTotal) {
+        alert (`Player Push`);
+    } else {
+        alert (`player loses`);
+    };
+
+    
+};
+const tableClear = function () {
+    dealerCards = [];
+    playerCards = [];
+    
+    localStorage.setItem('playerCards', JSON.stringify(playerCards));
+    localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
+    showPlayerCards.innerHTML = ''; // Clear previous cards
+    showDealerCards.innerHTML = '';
+};
+
+//I need to call player stay function if player clicks "double down" so there's a separate function that can be called by either event listener
+const playerStayLogic = function () {
+ //set player state to 'stay' so dealer will take more cards
+    
+    dealerCards[0].state = 'faceUp';
+    renderDealerCards();
+    let dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+
+    if (dealerTotal >= 17) {
+    console.log (`dealer stays`);
+    checkForWin();
+    return
+    } else {
+    hitCard('dealer');
+    dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
+    console.log(`after hit card dealer total ${dealerTotal}`)
+};
+    
+};
+//Split Functions
+//Split PlayerHand
+const splitArray = function () {
+
+};
+//Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
 playerDeal.addEventListener('click', dealCards);
 
-
-playerHit.addEventListener('click', function(){
-    console.log('hit');
+playerHit.addEventListener('click', function () {
+    hitCard('player');
 });
 
-playerStay.addEventListener('click', function(){
-    console.log('stay');
-});
+playerStay.addEventListener('click', playerStayLogic);
 
 playerDoubleDown.addEventListener('click', function(){
     console.log('Double Down');
+    hitCard('player');
+    playerStayLogic();
 });
 
 playerSplit.addEventListener('click', function(){
     console.log('split');
+    splitCount = localStorage.getItem('splitCount');
+    console.log(splitCount);
 });
 
 playerClear.addEventListener('click', tableClear);
 
 
-//localStorage.clear();
-/*document.addEventListener('DOMContentLoaded', () => {
-    const card = document.getElementById('card');
-    
-    card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const card2 = document.getElementById('card2');
-    
-    card2.addEventListener('click', () => {
-        card2.classList.toggle('flipped');
-    });
-});*/
 

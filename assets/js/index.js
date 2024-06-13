@@ -47,10 +47,8 @@ const lastNameInputEl = document.getElementById("last_name");
 const createUserNameInput = document.getElementById("create_username");
 const createPasswordInput = document.getElementById("create_password");
 const submitButton = document.getElementById("submitBtn");
-
 //let userArray = JSON.parse(localStorage.getItem('userArray'))||[];
 localStorage.clear("current_user");
-
 // const userArray = [
 //   {
 //     username: "username",
@@ -62,22 +60,17 @@ localStorage.clear("current_user");
 //     createPassword: "create-password",
 //   },
 // ];
-
 // const userArrayString = JSON.stringify(userArray);
 // localStorage.setItem("user", userArrayString);
-
 const displayMessage = (type, message) => {
   const messageEl = document.getElementById("message");
   messageEl.textContent = message;
 };
-
 loginButton.addEventListener("click", function (event) {
   event.preventDefault();
-
   const username = usernameInput.value;
   const password = passwordInput.value;
   const decks = numberOfDecks.options[numberOfDecks.selectedIndex].value;
-
   if (username === "") {
     displayMessage("error", "username cannot be blank");
   } else if (password === "") {
@@ -98,7 +91,6 @@ loginButton.addEventListener("click", function (event) {
       displayMessage("error", "username or password was incorrect");
     }
     // displayMessage('success', 'Play Game!')
-
     // localStorage.setItem('username', username);
     // localStorage.setItem('password', password);
   }
@@ -121,7 +113,6 @@ submitButton.addEventListener("click", function (event) {
     displayMessage("error", "user already exists");
     return;
   }
-
   users.push(user);
   localStorage.setItem("users", JSON.stringify(users));
   displayMessage("success", "user account created successfully");
