@@ -148,6 +148,7 @@ body {
 }
 
 
+
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
@@ -184,5 +185,43 @@ body {
         0 0 40px #6200ff,  
         0 0 55px #0004ff,  
         0 0 75px #090080;  
+=======
+
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+
+
+
+
+.login-page {
+    color: #80c6ff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
+.game-page {
+    color: #80c6ff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#dealerCards, #playerCards {
+    display: flex;
+    gap: 10px;
+
+}
+
+.neon {
+    color: black; 
+    text-shadow:
+        0 0 5px #ff0000,   
+        0 0 10px #003cff,  
+        0 0 20px #ffff00,  
+        0 0 30px #4b0082,  
+        0 0 40px #6200ff,  
+        0 0 55px #0004ff,  
+        0 0 75px #090080;  
+}
