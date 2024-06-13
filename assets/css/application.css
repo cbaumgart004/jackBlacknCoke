@@ -23,75 +23,66 @@ body {
     flex-wrap: nowrap;
 }
 
-.card,
-.card2 {
+.card {
     width: 120px;
     height: 168px;
-    flex-shrink: 0;
     perspective: 1000px;
     margin: 10px;
-    display: inline-block;
     position: relative;
+    animation: slideIn .75s ease-out;
 }
 
-
-
-.card-content,
-.card-content2 {
+.card-inner {
+    position: absolute;
     width: 100%;
     height: 100%;
     transition: transform 1s;
     transform-style: preserve-3d;
-    border-radius: 15px;
-    position: relative;
-    overflow: hidden;
 }
 
-.card-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-    position: absolute;
-    top: 0;
-    left: 0;
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
 }
-
-.card.flipped .card-content,
-.card2.flipped .card-content2 {
-    transform: rotateY(.5turn);
-}
-
-
 
 .card-front,
-.card-front2 {
-    background: linear-gradient(to right, #000000, #80c6ff);
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
     border-radius: 15px;
 }
 
-.card-back,
-.card-back2 {
-     /* Add styles for the back of the cards */
-     /*background-image: url('../images/cardback.png'); */
-     background-size: cover;
-     background-position: center;
-     border-radius: 15px; /* Adjust as needed */
+.card-front {
+    background: linear-gradient(to right, #000000, #80c6ff);
 }
 
+.card-back {
+    background-image: url('../assets/images/cardback.png');
+    background-size: cover;
+    background-position: center;
+    transform: rotateY(180deg);
+}
+
+/* Slide in animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
 /* Additional styles for game layout */
 .gameTable {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 20px;
-}
-
-.dealerCards, .playerCards {
-    display: flex;
-    gap: 10px;
 }
 
 .playerButtons {
@@ -99,10 +90,98 @@ body {
     gap: 10px;
 }
 
+/* Base button styles */
 .btn {
-    background: linear-gradient(to left, #000000, #80c6ff);
-    color: white;
-    border-radius: 15px;
+    position: relative;
+    display: inline-block;
     padding: 10px 20px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: white;
+    background: linear-gradient(to left, #000000, #2ca0ff);
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s;
 }
 
+
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+
+
+/* Gradient border effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: linear-gradient(
+        to left,
+        hsl(224, 85%, 66%),
+        hsl(269, 85%, 66%),
+        hsl(314, 85%, 66%),
+        hsl(359, 85%, 66%),
+        hsl(44, 85%, 66%),
+        hsl(89, 85%, 66%),
+        hsl(134, 85%, 66%),
+        hsl(179, 85%, 66%)
+    );
+    border-radius: 15px;
+    transition: all 0.3s;
+}
+
+.btn:hover::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Adjust text color on hover */
+.btn:hover {
+    color: black; /* Change to desired text color */
+}
+
+
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+
+
+
+
+.login-page {
+    color: #80c6ff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.game-page {
+    color: #80c6ff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#dealerCards, #playerCards {
+    display: flex;
+    gap: 10px;
+}
+
+.neon {
+    color: black; 
+    text-shadow:
+        0 0 5px #ff0000,   
+        0 0 10px #003cff,  
+        0 0 20px #ffff00,  
+        0 0 30px #4b0082,  
+        0 0 40px #6200ff,  
+        0 0 55px #0004ff,  
+        0 0 75px #090080;  
+}
