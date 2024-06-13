@@ -1,66 +1,187 @@
-*, *::before, *::after{
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
 }
 
-body{
+body {
+    background-image: url('../images/Future-casino.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     height: 100vh;
+    width: 100vw;
     display: grid;
-    place-items: center;
+    color: white;
 }
 
-.card{
-    width: 400px;
+.card-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+
+.card {
+    width: 120px;
+    height: 168px;
     perspective: 1000px;
-}
-
-
-.card-content{
-    text-align: center;
+    margin: 10px;
     position: relative;
-    padding: 5em;
-    transition: transform 3s;
-    background: pink;
-    transform-style: preserve-3d;
-    border-radius: 25px;
+    animation: slideIn .75s ease-out;
 }
 
-.card.flipped .card-content{
-    transform: rotateY(.5turn);
+.card-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
 }
 
 .card-front,
-.card-back{
+.card-back {
     position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+}
+
+.card-front {
+    background: linear-gradient(to right, #000000, #80c6ff);
+}
+
+.card-back {
+    background-image: url('../assets/images/cardback.png');
+    background-size: cover;
+    background-position: center;
+    transform: rotateY(180deg);
+}
+
+/* Slide in animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Additional styles for game layout */
+.gameTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.playerButtons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Base button styles */
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: white;
+    background: linear-gradient(to left, #000000, #2ca0ff);
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+
+
+/* Gradient border effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: linear-gradient(
+        to left,
+        hsl(224, 85%, 66%),
+        hsl(269, 85%, 66%),
+        hsl(314, 85%, 66%),
+        hsl(359, 85%, 66%),
+        hsl(44, 85%, 66%),
+        hsl(89, 85%, 66%),
+        hsl(134, 85%, 66%),
+        hsl(179, 85%, 66%)
+    );
+    border-radius: 15px;
+    transition: all 0.3s;
+}
+
+.btn:hover::before {
     top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
-    padding: 2em;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
+    bottom: 0;
 }
 
-.card-front{
-    background: lightgreen;
-    border-radius: 25px;
+/* Adjust text color on hover */
+.btn:hover {
+    color: black; /* Change to desired text color */
 }
 
-.card-title{
-    font-size: 1rem;
-    transform: translateZ(6rem);
+
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+/* BUTTON BORDER GRADIENT*/
+
+
+
+
+.login-page {
+    color: #80c6ff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.card-body{
-    transform: translateZ(4rem);
+.game-page {
+    color: #80c6ff;
+    text-align: center;
+    margin-top: 20px;
 }
 
-.card-subtitle{
-    transform: translateZ(4rem);
+#dealerCards, #playerCards {
+    display: flex;
+    gap: 10px;
 }
 
-.card-back{
-    transform: rotateY(.5turn);
-    background: lightblue;
-    border-radius: 25px;
+.neon {
+    color: black; 
+    text-shadow:
+        0 0 5px #ff0000,   
+        0 0 10px #003cff,  
+        0 0 20px #ffff00,  
+        0 0 30px #4b0082,  
+        0 0 40px #6200ff,  
+        0 0 55px #0004ff,  
+        0 0 75px #090080;  
 }
