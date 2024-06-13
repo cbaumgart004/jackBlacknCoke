@@ -27,6 +27,20 @@ console.log(`page open dealer cards: ${dealerCards}` )
 // On open fetch request Deck of Cards API with a "New" and shuffle
 //tokens expire after 2 weeks, this ensures a new token is created on game start
 
+const apiCards = document.querySelectorAll('.api-card');
+//TODO: fetch request to draw a card.  We will create a "deal" function later
+
+apiCards.forEach(card => {
+    // Add a CSS class
+    card.classList.add('card-back');
+    // Alternatively, you can directly apply styles
+    card.style.backgroundImage = "url('../assets/images/cardback.png')";
+    card.style.backgroundSize = "cover";
+    card.style.backgroundPosition = "center";
+    card.style.borderRadius = "15px";
+});
+
+
 const shuffleCards = function () {
     localStorage.getItem('deckId', 'deckId')
     let shuffleUrl;
@@ -330,5 +344,9 @@ playerSplit.addEventListener('click', function(){
 });
 
 playerClear.addEventListener('click', tableClear);
+
+
+
+
 
 

@@ -47,18 +47,18 @@
                     </p>
                 </div>
                 <br>
-                
+
                 <br>
                 <div class="control">
-                    <div class="select" id="numberOfDecks">
-                        <select>
+                    <div class="select">
+                        <select id="numberOfDecks">
                             <option>Number of Decks</option>
-                            <option>1 Deck</option>
-                            <option>2 Decks</option>
-                            <option>3 Decks</option>
-                            <option>4 Decks</option>
-                            <option>5 Decks</option>
-                            <option>6 Decks</option>
+                            <option value="1">1 Deck</option>
+                            <option value="2">2 Decks</option>
+                            <option value="3">3 Decks</option>
+                            <option value="4">4 Decks</option>
+                            <option value="5">5 Decks</option>
+                            <option value="6">6 Decks</option>
                         </select>
                     </div>
                 </div>
@@ -69,21 +69,22 @@
                             Login
                         </button>
                     </p>
+                    <p id="message"></p>
                 </div>
                 <br>
                 <div class="box">
                     <p>Create Account</p>
                     <br>
                     <div class="control">
-                        <input class="input" type="text" id="first-name" placeholder="First Name">
-                      </div>
-                      <div class="control">
-                        <input class="input" type="text" id="last-name" placeholder="Last Name">
-                      </div>
-                      <br>
+                        <input class="input" type="text" id="first_name" placeholder="First Name">
+                    </div>
+                    <div class="control">
+                        <input class="input" type="text" id="last_name" placeholder="Last Name">
+                    </div>
+                    <br>
                     <div class="container">
                         <p class="control has-icons-left has-icons-right">
-                            <input class="input" type="username" id="create-username" placeholder="Create Username">
+                            <input class="input" type="username" id="create_username" placeholder="Create Username">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                             </span>
@@ -94,7 +95,7 @@
                     </div>
                     <div class="container">
                         <p class="control has-icons-left">
-                            <input class="input" type="password" id="create-password" placeholder=" Create Password">
+                            <input class="input" type="password" id="create_password" placeholder=" Create Password">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock"></i>
                             </span>
@@ -111,11 +112,12 @@
 
 
 
+                </div>
             </div>
+
+            <button class="modal-close is-large" aria-label="close"></button>
         </div>
 
-        <button class="modal-close is-large" aria-label="close"></button>
-    </div>
 
 
 
@@ -128,8 +130,7 @@
 
 
 
-
-    <script src="./assets/js/index.js"></script>
+        <script src="./assets/js/index.js"></script>
 
 </body>
 
