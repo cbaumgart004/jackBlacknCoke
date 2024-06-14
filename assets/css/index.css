@@ -31,7 +31,7 @@ body {
 }
 
 
-
+.neon {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-end;
