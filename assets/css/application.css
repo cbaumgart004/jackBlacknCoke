@@ -14,6 +14,21 @@ body {
     color: white;
 }
 
+.win{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px; 
+}
+
+
+.lose{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px; 
+}
+
 .card-container {
     display: flex;
     gap: 10px;
@@ -97,66 +112,33 @@ body {
     padding: 10px 20px;
     font-size: 1.5rem;
     text-transform: uppercase;
-    color: white;
+    color: rgb(255, 255, 255); 
+    text-shadow:
+        0 0 5px #ff0000,   
+        0 0 10px #003cff,  
+        0 0 20px #ffff00,  
+        0 0 30px #4b0082,  
+        0 0 40px #6200ff,  
+        0 0 55px #0004ff,  
+        0 0 75px #090080;
     background: linear-gradient(to left, #000000, #2ca0ff);
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
     transition: color 0.3s, background-color 0.3s;
+    box-shadow: 1px 2px #7e0058;
+    border: hidden;
 }
 
-
-/* BUTTON BORDER GRADIENT*/
-/* BUTTON BORDER GRADIENT*/
-/* BUTTON BORDER GRADIENT*/
-
-
-/* Gradient border effect */
-.btn::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    z-index: -1;
-    background: linear-gradient(
-        to left,
-        hsl(224, 85%, 66%),
-        hsl(269, 85%, 66%),
-        hsl(314, 85%, 66%),
-        hsl(359, 85%, 66%),
-        hsl(44, 85%, 66%),
-        hsl(89, 85%, 66%),
-        hsl(134, 85%, 66%),
-        hsl(179, 85%, 66%)
-    );
-    border-radius: 15px;
-    transition: all 0.3s;
-}
-
-.btn:hover::before {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
 
 /* Adjust text color on hover */
 .btn:hover {
-    color: black; /* Change to desired text color */
+    color: rgb(248, 130, 179); 
+    filter: drop-shadow(3px 3px 10px #7e0058);
 }
 
-
-/* BUTTON BORDER GRADIENT*/
-/* BUTTON BORDER GRADIENT*/
-/* BUTTON BORDER GRADIENT*/
-
-
-
-
 .login-page {
-    color: #80c6ff;
+    color: #7e0058;
     position: absolute;
     top: 0;
     left: 50%;
@@ -185,3 +167,140 @@ body {
         0 0 55px #0004ff,  
         0 0 75px #090080;  
 }
+
+.login-page {
+    color: #80c6ff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.game-page {
+    color: #80c6ff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#dealerCards, #playerCards {
+    display: flex;
+    gap: 10px;
+
+}
+
+.neon {
+    color: #ffffff; 
+    text-shadow:
+        0 0 5px #ff0000,   
+        0 0 10px #003cff,  
+        0 0 20px #ffff00,  
+        0 0 30px #4b0082,  
+        0 0 40px #6200ff,  
+        0 0 55px #0004ff,  
+        0 0 75px #090080;  
+}
+
+
+
+/*ANIMATION TEST*/
+/*ANIMATION TEST*/
+/*ANIMATION TEST*/
+
+:root {
+    --color-primary: #ffffff; /* Black color for the main text */
+    --color-secondary: #ff0000; /* Red */
+    --color-tertiary: #003cff; /* Blue */
+    --color-quaternary: #ffff00; /* Yellow */
+    --color-quinary: #4b0082; /* Indigo */
+    --color-senary: #6200ff; /* Violet */
+    --color-septenary: #0004ff; /* Another shade of blue */
+    --color-octonary: #090080; /* Dark blue */
+  }
+  
+  .content {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column; /* Ensures the elements stack vertically */
+    text-align: center; /* Centering the text in the column layout */
+  }
+  
+  .text_shadows {
+    text-shadow:
+      0 0 5px var(--color-secondary),   
+      0 0 10px var(--color-tertiary),  
+      0 0 20px var(--color-quaternary),  
+      0 0 30px var(--color-quinary),  
+      0 0 40px var(--color-senary),  
+      0 0 55px var(--color-septenary),  
+      0 0 75px var(--color-octonary);
+    font-family: bungee, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: calc(2rem + 5vw);
+    color: var(--color-primary);
+    animation: shadows 1.2s ease-in infinite;
+    letter-spacing: 0.4rem;
+    margin: 10px 0; /* Adding margin to space out the elements */
+  }
+  
+  .win, .lose {
+    text-shadow:
+      0 0 5px var(--color-secondary),   
+      0 0 10px var(--color-tertiary),  
+      0 0 20px var(--color-quaternary),  
+      0 0 30px var(--color-quinary),  
+      0 0 40px var(--color-senary),  
+      0 0 55px var(--color-septenary),  
+      0 0 75px var(--color-octonary);
+    font-family: bungee, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 2rem; /* Adjust the font size as needed */
+    color: var(--color-primary);
+    animation: shadows 1.2s ease-in infinite;
+    letter-spacing: 0.2rem;
+    margin: 10px 0; /* Adding margin to space out the elements */
+  }
+  
+  @keyframes shadows {
+    0% {
+      text-shadow: none;
+    }
+    10% {
+      text-shadow: 0 0 5px var(--color-secondary);
+    }
+    20% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary);
+    }
+    30% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary);
+    }
+    40% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary);
+    }
+    50% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary);
+    }
+    60% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary);
+    }
+    70% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary), 0 0 75px var(--color-octonary);
+    }
+    80% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary), 0 0 75px var(--color-octonary);
+    }
+    90% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary);
+    }
+    100% {
+      text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary), 0 0 75px var(--color-octonary);
+    }
+  }
+  
+  
+  
+/*ANIMATION TEST*/
+/*ANIMATION TEST*/
+/*ANIMATION TEST*/

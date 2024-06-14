@@ -6,11 +6,17 @@ const playerStay = document.getElementById('stay');
 const playerDoubleDown = document.getElementById('doubleDown');
 const playerSplit = document.getElementById('split');
 const playerClear = document.getElementById('clear');
+const gameTable = document.getElementById('gameTable');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
 const cardsRemaining = localStorage.getItem('cardsRemaining')||'';
 
+//initialize variables for gameplay
+let splitCount = localStorage.getItem('localStorage');
+if (!splitCount) {
+    splitCount = localStorage.setItem('splitCount', 0);
+}
 let deckId = localStorage.getItem('deckId');
 let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
 //console.log(playerCards[0].code, playerCards[1].code);
@@ -18,7 +24,7 @@ let dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 console.log(`page open dealer cards: ${dealerCards}` )
 //console.log (dealerCards[0].image);
 //console.log(dealerCards[0].code, dealerCards[1].code);
-//TODO: On open fetch request Deck of Cards API with a "New" and shuffle
+// On open fetch request Deck of Cards API with a "New" and shuffle
 //tokens expire after 2 weeks, this ensures a new token is created on game start
 const apiCards = document.querySelectorAll('.api-card');
 //TODO: fetch request to draw a card.  We will create a "deal" function later
@@ -63,10 +69,9 @@ const shuffleCards = function () {
             alert (`Unable to connect to Deck of Cards API`);
         });
 };
-
 console.log(deckId);
 
-
+//deal the initial cards
 const dealCards = function() {
     const dealDealerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
     const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
@@ -91,7 +96,7 @@ const dealCards = function() {
                 alert(`Unable to connect to Deck of Cards API`);
             });
     };
-
+    //run this function twice, once for dealer, once for player
     dealCard(dealDealerUrl, dealerCards, dealerHand);
     dealCard(dealPlayerUrl, playerCards, playerHand);
 };
@@ -126,7 +131,8 @@ const dealerHand = function(data) {
         dealerCards[0].state = 'faceDown';
     console.log(`dealerHand calculated total ${dealerTotal}`);
     }
-    if (dealerTotal === 21) {
+    //only call a blackjack on deal
+    if (dealerTotal === 21 && dealerCards.length === 2) {
         if (dealerTotal > playerTotal) {
             alert(`Dealer Blackjack. Player Loses`);
         } else {
@@ -142,7 +148,7 @@ const dealerHand = function(data) {
 
 const playerHand = function(data) {
     let playerTotal = calculateTotalAndSave(playerCards, 'playerTotal');
-    
+    //only call blackjack on deal
     if (playerTotal === 21 && playerCards.size === 2) {
         alert('Blackjack');
     }
@@ -304,11 +310,15 @@ const playerStayLogic = function () {
     hitCard('dealer');
     dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
     console.log(`after hit card dealer total ${dealerTotal}`)
-;}
+};
     
 };
+//Split Functions
+//Split PlayerHand
+const splitArray = function () {
 
-//TODO: Add event listener to buttons for gameplay
+};
+//Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
 playerDeal.addEventListener('click', dealCards);
@@ -327,8 +337,14 @@ playerDoubleDown.addEventListener('click', function(){
 
 playerSplit.addEventListener('click', function(){
     console.log('split');
+    splitCount = localStorage.getItem('splitCount');
+    console.log(splitCount);
 });
 
-//playerClear.addEventListener('click', tableClear);
+playerClear.addEventListener('click', tableClear);
+
+
+
+
 
 
