@@ -7,6 +7,8 @@ const playerDoubleDown = document.getElementById('doubleDown');
 const playerSplit = document.getElementById('split');
 const playerClear = document.getElementById('clear');
 const gameTable = document.getElementById('gameTable');
+const dayNight = document.getElementById('dayRender');
+const dayNightButton = document.getElementById('getDayNight')
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
@@ -318,6 +320,29 @@ const playerStayLogic = function () {
 const splitArray = function () {
 
 };
+//for the dayNight function
+const getSunsetTime = function () {
+    const lattitude = 39.996064;
+    const longitude =-105.090815; 
+    const sunsetUrl = `https://api.sunrisesunset.io/json?lat=${lattitude}&lng=${longitude}&date=2024-06-13`;
+
+    fetch(sunsetUrl)
+        .then(function(response) {
+            if (response.ok)  {
+                console.log(response);
+                return response.json();
+            } else {
+                alert(`Error: ${response.statusText}`);
+            }
+        }).then (function (data) {
+            console.log(data)
+        })
+        .catch(function(error) {
+            console.log(error)
+            alert ('Unable to connect to Sunset API')
+        });
+};
+
 //Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
@@ -343,5 +368,5 @@ playerSplit.addEventListener('click', function(){
 
 playerClear.addEventListener('click', tableClear);
 
-
+dayNightButton.addEventListener('click', getSunsetTime)
 

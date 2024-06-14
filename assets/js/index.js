@@ -105,7 +105,7 @@ submitButton.addEventListener("click", function (event) {
   };
   let users = localStorage.getItem("users");
   users = JSON.parse(users);
-  if (users == null) users = [];
+  if (users === null) users = [];
   const duplicateUser = users.find((user) => {
     return user.username == username;
   });
