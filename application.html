@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/application.css" />
     <title>Jack Black n Coke</title>
+    <!-- Link the DayJS library -->
+    <script
+    src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+    crossorigin="anonymous"
+    ></script>
 </head>
 <body>
     <section class="nav">
@@ -18,15 +24,14 @@
     <section class="gameTable">
         <section class="dealerCards" id="dealerCards"></section>
         <section class="playerButtons">
-            <button class="btn" id="shuffle">Shuffle</button>
+            <button class="btn" id="shuffle">New Game</button>
             <button class="btn" id="deal">Deal</button>
             <button class="btn" id="hit">Hit</button>
             <button class="btn" id="stay">Stay</button>
             <button class="btn" id="doubleDown">Double Down</button>
             <button class="btn" id="split">Split</button>
             <button class ="btn" id ="clear">Clear</button>
-            <button class ="btn" id ="getDayNight">What Time is it?</button>
-        </section>
+            </section>
         <section class="playerCards" id="playerCards"></section>
     </section>
     
@@ -35,11 +40,11 @@
         <span class="win" id="win">You Win!</span>
         <span class="lose" id="lose">Better luck next time.</span>
         <span class ="push" id = "pushNotification">Push.  Could have been worse. You still got the money you left on the table.</span>
-        <span class="blackjack" "blackJackNotification">Jack Black says, "BlackJack!</span>
+        <span class="blackjack" id="blackJackNotification">Jack Black says, BlackJack!</span>
             
         </object>
-    <object class="dayRender" id="dayRender">Day</object>
-
+    <object  class="dayRender" id="dayRender">Day</object>
+        <img id = "dayRenderImage" src = "./assets/images/Daytime.jpg" alt = "Day Time" width = "200px" height = "200px">
 
     <script src="./assets/js/application.js"></script>
 </body>
