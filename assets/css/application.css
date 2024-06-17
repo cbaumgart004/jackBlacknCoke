@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
 }
-
 body {
     background-image: url('../images/Future-casino.jpg');
     background-size: cover;
@@ -13,23 +12,30 @@ body {
     display: grid;
     color: white;
 }
-
-
 .win{
     position: absolute;
     top: 0;
     right: 0;
-    padding: 10px; 
+    padding: 10px;
 }
-
-
+.push{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+.blackjack{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
 .lose{
     position: absolute;
     top: 0;
     left: 0;
-    padding: 10px; 
+    padding: 10px;
 }
-
 .card-container {
     display: flex;
     gap: 10px;
@@ -38,7 +44,6 @@ body {
     overflow-x: auto;
     flex-wrap: nowrap;
 }
-
 .card-container {
     display: flex;
     gap: 10px;
@@ -47,8 +52,6 @@ body {
     overflow-x: auto;
     flex-wrap: nowrap;
 }
-
-
 .card {
     width: 120px;
     height: 168px;
@@ -57,7 +60,6 @@ body {
     position: relative;
     animation: slideIn .75s ease-out;
 }
-
 .card-inner {
     position: absolute;
     width: 100%;
@@ -65,11 +67,9 @@ body {
     transition: transform 1s;
     transform-style: preserve-3d;
 }
-
 .card.flipped .card-inner {
     transform: rotateY(180deg);
 }
-
 .card-front,
 .card-back {
     position: absolute;
@@ -77,20 +77,16 @@ body {
     height: 100%;
     backface-visibility: hidden;
     border-radius: 15px;
-
 }
-
 .card-front {
-    background: linear-gradient(to right, #000000, #80c6ff);
+    background: linear-gradient(to right, #000000, #80C6FF);
 }
-
 .card-back {
     background-image: url('../assets/images/cardback.png');
     background-size: cover;
     background-position: center;
     transform: rotateY(180deg);
 }
-
 /* Slide in animation */
 @keyframes slideIn {
     from {
@@ -102,7 +98,6 @@ body {
         opacity: 1;
     }
 }
-
 /* Additional styles for game layout */
 .gameTable {
     display: flex;
@@ -111,24 +106,19 @@ body {
     justify-content: flex-start;
     gap: 20px;
 }
-
 .playerButtons {
     display: flex;
     gap: 10px;
-
 }
-
 .card-front {
-    background: linear-gradient(to right, #000000, #80c6ff);
+    background: linear-gradient(to right, #000000, #80C6FF);
 }
-
 .card-back {
     background-image: url('../assets/images/cardback.png');
     background-size: cover;
     background-position: center;
     transform: rotateY(180deg);
 }
-
 /* Slide in animation */
 @keyframes slideIn {
     from {
@@ -140,7 +130,6 @@ body {
         opacity: 1;
     }
 }
-
 /* Additional styles for game layout */
 .gameTable {
     display: flex;
@@ -149,12 +138,10 @@ body {
     justify-content: flex-start;
     gap: 20px;
 }
-
 .playerButtons {
     display: flex;
     gap: 10px;
 }
-
 /* Base button styles */
 .btn {
     position: relative;
@@ -163,135 +150,85 @@ body {
     font-size: 1.5rem;
     text-transform: uppercase;
     color: white;
-    background: linear-gradient(to left, #000000, #2ca0ff);
+    background: linear-gradient(to left, #000000, #2CA0FF);
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
     transition: color 0.3s, background-color 0.3s;
 }
-
-
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
-
-
-/* Gradient border effect */
-.btn::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    z-index: -1;
-    background: linear-gradient(
-        to left,
-        hsl(224, 85%, 66%),
-        hsl(269, 85%, 66%),
-        hsl(314, 85%, 66%),
-        hsl(359, 85%, 66%),
-        hsl(44, 85%, 66%),
-        hsl(89, 85%, 66%),
-        hsl(134, 85%, 66%),
-        hsl(179, 85%, 66%)
-    );
-    border-radius: 15px;
-    transition: all 0.3s;
-}
-
 .btn:hover::before {
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
 }
-
 /* Adjust text color on hover */
 .btn:hover {
     color: black; /* Change to desired text color */
 }
-
-
-
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
-
-
-
-
 .login-page {
-    color: #80c6ff;
+    color: #80C6FF;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .game-page {
-    color: #80c6ff;
+    color: #80C6FF;
     text-align: center;
     margin-top: 20px;
 }
-
 #dealerCards, #playerCards {
     display: flex;
     gap: 10px;
 }
-
 .neon {
-    color: black; 
+    color: black;
     text-shadow:
-        0 0 5px #ff0000,   
-        0 0 10px #003cff,  
-        0 0 20px #ffff00,  
-        0 0 30px #4b0082,  
-        0 0 40px #6200ff,  
-        0 0 55px #0004ff,  
-        0 0 75px #090080;  
-
+        0 0 5px #FF0000,
+        0 0 10px #003CFF,
+        0 0 20px #FFFF00,
+        0 0 30px #4B0082,
+        0 0 40px #6200FF,
+        0 0 55px #0004FF,
+        0 0 75px #090080;
 }
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
 /* BUTTON BORDER GRADIENT*/
-
-
-
-
 .login-page {
-    color: #80c6ff;
+    color: #80C6FF;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .game-page {
-    color: #80c6ff;
+    color: #80C6FF;
     text-align: center;
     margin-top: 20px;
 }
-
 #dealerCards, #playerCards {
     display: flex;
     gap: 10px;
-
 }
-
 .neon {
-    color: black; 
+    color: black;
     text-shadow:
-        0 0 5px #ff0000,   
-        0 0 10px #003cff,  
-        0 0 20px #ffff00,  
-        0 0 30px #4b0082,  
-        0 0 40px #6200ff,  
-        0 0 55px #0004ff,  
-        0 0 75px #090080;  
-
+        0 0 5px #FF0000,
+        0 0 10px #003CFF,
+        0 0 20px #FFFF00,
+        0 0 30px #4B0082,
+        0 0 40px #6200FF,
+        0 0 55px #0004FF,
+        0 0 75px #090080;
 }
-
 /* Base button styles */
 .btn {
     position: relative;
@@ -299,111 +236,95 @@ body {
     padding: 10px 20px;
     font-size: 1.5rem;
     text-transform: uppercase;
-    color: rgb(255, 255, 255); 
+    color: rgb(255, 255, 255);
     text-shadow:
-        0 0 5px #ff0000,   
-        0 0 10px #003cff,  
-        0 0 20px #ffff00,  
-        0 0 30px #4b0082,  
-        0 0 40px #6200ff,  
-        0 0 55px #0004ff,  
+        0 0 5px #FF0000,
+        0 0 10px #003CFF,
+        0 0 20px #FFFF00,
+        0 0 30px #4B0082,
+        0 0 40px #6200FF,
+        0 0 55px #0004FF,
         0 0 75px #090080;
-    background: linear-gradient(to left, #000000, #2ca0ff);
+    background: linear-gradient(to left, #000000, #2CA0FF);
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
     transition: color 0.3s, background-color 0.3s;
-    box-shadow: 1px 2px #7e0058;
+    box-shadow: 1px 2px #7E0058;
     border: hidden;
 }
-
-
 /* Adjust text color on hover */
 .btn:hover {
-    color: rgb(248, 130, 179); 
-    filter: drop-shadow(3px 3px 10px #7e0058);
+    color: rgb(248, 130, 179);
+    filter: drop-shadow(3px 3px 10px #7E0058);
 }
-
 .login-page {
-    color: #7e0058;
+    color: #7E0058;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .game-page {
-    color: #80c6ff;
+    color: #80C6FF;
     text-align: center;
     margin-top: 20px;
 }
-
 #dealerCards, #playerCards {
     display: flex;
     gap: 10px;
 }
-
 .neon {
-    color: black; 
+    color: black;
     text-shadow:
-        0 0 5px #ff0000,   
-        0 0 10px #003cff,  
-        0 0 20px #ffff00,  
-        0 0 30px #4b0082,  
-        0 0 40px #6200ff,  
-        0 0 55px #0004ff,  
-        0 0 75px #090080;  
+        0 0 5px #FF0000,
+        0 0 10px #003CFF,
+        0 0 20px #FFFF00,
+        0 0 30px #4B0082,
+        0 0 40px #6200FF,
+        0 0 55px #0004FF,
+        0 0 75px #090080;
 }
-
 .login-page {
-    color: #80c6ff;
+    color: #80C6FF;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .game-page {
-    color: #80c6ff;
+    color: #80C6FF;
     text-align: center;
     margin-top: 20px;
 }
-
 #dealerCards, #playerCards {
     display: flex;
     gap: 10px;
-
 }
-
 .neon {
-    color: #ffffff; 
+    color: #000000;
     text-shadow:
-        0 0 5px #ff0000,   
-        0 0 10px #003cff,  
-        0 0 20px #ffff00,  
-        0 0 30px #4b0082,  
-        0 0 40px #6200ff,  
-        0 0 55px #0004ff,  
-        0 0 75px #090080;  
+        0 0 5px #FF0000,
+        0 0 10px #003CFF,
+        0 0 20px #FFFF00,
+        0 0 30px #4B0082,
+        0 0 40px #6200FF,
+        0 0 55px #0004FF,
+        0 0 75px #090080;
 }
-
-
-
 /*ANIMATION TEST*/
 /*ANIMATION TEST*/
 /*ANIMATION TEST*/
-
 :root {
-    --color-primary: #ffffff; /* Black color for the main text */
-    --color-secondary: #ff0000; /* Red */
-    --color-tertiary: #003cff; /* Blue */
-    --color-quaternary: #ffff00; /* Yellow */
-    --color-quinary: #4b0082; /* Indigo */
-    --color-senary: #6200ff; /* Violet */
-    --color-septenary: #0004ff; /* Another shade of blue */
+    --color-primary: #000000; /* Black color for the main text */
+    --color-secondary: #FF0000; /* Red */
+    --color-tertiary: #003CFF; /* Blue */
+    --color-quaternary: #FFFF00; /* Yellow */
+    --color-quinary: #4B0082; /* Indigo */
+    --color-senary: #6200FF; /* Violet */
+    --color-septenary: #0004FF; /* Another shade of blue */
     --color-octonary: #090080; /* Dark blue */
   }
-  
   .content {
     display: flex;
     align-content: center;
@@ -411,15 +332,14 @@ body {
     flex-direction: column; /* Ensures the elements stack vertically */
     text-align: center; /* Centering the text in the column layout */
   }
-  
   .text_shadows {
     text-shadow:
-      0 0 5px var(--color-secondary),   
-      0 0 10px var(--color-tertiary),  
-      0 0 20px var(--color-quaternary),  
-      0 0 30px var(--color-quinary),  
-      0 0 40px var(--color-senary),  
-      0 0 55px var(--color-septenary),  
+      0 0 5px var(--color-secondary),
+      0 0 10px var(--color-tertiary),
+      0 0 20px var(--color-quaternary),
+      0 0 30px var(--color-quinary),
+      0 0 40px var(--color-senary),
+      0 0 55px var(--color-septenary),
       0 0 75px var(--color-octonary);
     font-family: bungee, sans-serif;
     font-weight: 400;
@@ -430,15 +350,14 @@ body {
     letter-spacing: 0.4rem;
     margin: 10px 0; /* Adding margin to space out the elements */
   }
-  
-  .win, .lose {
+  .win, .lose, .push, .blackjack {
     text-shadow:
-      0 0 5px var(--color-secondary),   
-      0 0 10px var(--color-tertiary),  
-      0 0 20px var(--color-quaternary),  
-      0 0 30px var(--color-quinary),  
-      0 0 40px var(--color-senary),  
-      0 0 55px var(--color-septenary),  
+      0 0 5px var(--color-secondary),
+      0 0 10px var(--color-tertiary),
+      0 0 20px var(--color-quaternary),
+      0 0 30px var(--color-quinary),
+      0 0 40px var(--color-senary),
+      0 0 55px var(--color-septenary),
       0 0 75px var(--color-octonary);
     font-family: bungee, sans-serif;
     font-weight: 400;
@@ -449,7 +368,6 @@ body {
     letter-spacing: 0.2rem;
     margin: 10px 0; /* Adding margin to space out the elements */
   }
-  
   @keyframes shadows {
     0% {
       text-shadow: none;
@@ -485,9 +403,6 @@ body {
       text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-tertiary), 0 0 20px var(--color-quaternary), 0 0 30px var(--color-quinary), 0 0 40px var(--color-senary), 0 0 55px var(--color-septenary), 0 0 75px var(--color-octonary);
     }
   }
-  
-  
-  
 /*ANIMATION TEST*/
 /*ANIMATION TEST*/
 /*ANIMATION TEST*/

@@ -31,7 +31,7 @@ body {
 }
 
 
-.neon {
+.neon{
     display: flex;
     flex-wrap: wrap;
     align-content: flex-end;
@@ -86,22 +86,11 @@ h1 {
     color: #800055; 
 }
 
+#loginBtn, #submitBtn{
+    background-color: #800055;
+}
 
 
-    margin-left: 325px;
-    justify-content: center;
-}
-.js-modal-trigger {
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    margin-top: 100px;
-    font-size: 35px;
-    border-radius: 25px;
-    margin-left: 400px;
-    padding: 6px;
-    border: solid #008000;
-    background-color: #A9A9A9;
-    color: #000000;
-}
+
+
 

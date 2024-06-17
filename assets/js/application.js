@@ -8,12 +8,19 @@ const playerSplit = document.getElementById('split');
 const playerClear = document.getElementById('clear');
 const gameTable = document.getElementById('gameTable');
 const dayNight = document.getElementById('dayRender');
-const dayNightButton = document.getElementById('getDayNight')
+const dayNightImage = document.getElementById('dayRenderImage');
+const playerWin = document.getElementById('win');
+const playerLose = document.getElementById('lose');
+const playerPush = document.getElementById('pushNotification');
+const playerBlackJack = document.getElementById('blackJackNotification');
 //variables for cards to render to html
 const showDealerCards = document.getElementById('dealerCards');
 const showPlayerCards = document.getElementById('playerCards');
 const cardsRemaining = localStorage.getItem('cardsRemaining')||'';
+const dayNightButton = document.getElementById('getDayNight');
 
+let sunriseString = localStorage.getItem('sunriseString')||'';
+let sunsetString = localStorage.getItem('sunsetString')||'';
 //initialize variables for gameplay
 let splitCount = localStorage.getItem('localStorage');
 if (!splitCount) {
@@ -24,8 +31,7 @@ let playerCards = JSON.parse(localStorage.getItem('playerCards'))||[];
 //console.log(playerCards[0].code, playerCards[1].code);
 let dealerCards = JSON.parse(localStorage.getItem('dealerCards'))||[];
 console.log(`page open dealer cards: ${dealerCards}` )
-//console.log (dealerCards[0].image);
-//console.log(dealerCards[0].code, dealerCards[1].code);
+
 // On open fetch request Deck of Cards API with a "New" and shuffle
 //tokens expire after 2 weeks, this ensures a new token is created on game start
 const apiCards = document.querySelectorAll('.api-card');
@@ -40,8 +46,10 @@ apiCards.forEach(card => {
     card.style.backgroundPosition = "center";
     card.style.borderRadius = "15px";
 });
-
+//shuffle the deck function from deck of cards API
 const shuffleCards = function () {
+    playerShuffle1.style.display = 'none';
+    playerDeal.style.display = 'inline';
     localStorage.getItem('deckId', 'deckId')
     let shuffleUrl;
     if (!deckId) {
@@ -75,6 +83,10 @@ console.log(deckId);
 
 //deal the initial cards
 const dealCards = function() {
+    playerDeal.style.display = 'none';
+    playerHit.style.display = 'inline';
+    playerStay.style.display = 'inline';
+    playerDoubleDown.style.display = 'inline';
     const dealDealerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
     const dealPlayerUrl = `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
     //I really need to use arrow function syntax more.
@@ -136,9 +148,10 @@ const dealerHand = function(data) {
     //only call a blackjack on deal
     if (dealerTotal === 21 && dealerCards.length === 2) {
         if (dealerTotal > playerTotal) {
-            alert(`Dealer Blackjack. Player Loses`);
+            
+            playerLose.style.display ='inline';
         } else {
-            alert(`Dealer Blackjack. Player Push`);
+            playerPush.style.display = 'inline';
         }
     }
     console.log(`Dealer Shows ${dealerTotal}`);
@@ -152,7 +165,7 @@ const playerHand = function(data) {
     let playerTotal = calculateTotalAndSave(playerCards, 'playerTotal');
     //only call blackjack on deal
     if (playerTotal === 21 && playerCards.size === 2) {
-        alert('Blackjack');
+        playerBlackJack.style.display = 'inline';
     }
     
     console.log(`Player Shows ${playerTotal}`);
@@ -240,11 +253,13 @@ const updateDealerTotal = function() {
             }
             dealerTotal += dealerCards[i].value
         }
+        console.log(`With Aces dealer Total: ${dealerTotal}`)
         dealerTotal = localStorage.setItem('dealerTotal', dealerTotal);
+        console.log(dealerTotal<17);
         if (dealerTotal < 17) {
             hitCard ('dealer');
         } else {
-            alert (`Dealer Bust: Player Wins`);
+            playerWin.style.display = 'block';
         }
     }
     if (dealerTotal>= 17) {
@@ -266,7 +281,7 @@ const checkForBust = function(playerTotal) {
         localStorage.setItem('playerTotal', playerTotal);
         console.log(playerTotal);
         if(playerTotal > 21) {
-            alert('Player went bust');
+            playerLose.style.display = 'inline';
         }
         
     }
@@ -277,27 +292,45 @@ const checkForWin = function () {
     let playerTotal = parseInt(localStorage.getItem('playerTotal'));
     let dealerTotal = parseInt(localStorage.getItem('dealerTotal', 'dealerTotal'));
     if (playerTotal > dealerTotal) {
-        alert(`Player Wins`)
+        playerWin.style.display = 'inline';
     } else if (playerTotal === dealerTotal) {
-        alert (`Player Push`);
+        playerPush.style.display = 'inline';
     } else {
-        alert (`player loses`);
+        playerLose.style.display = 'inline';
     };
 
-    
+    playerHit.style.display = 'none';
+    playerStay.style.display = 'none';
+    playerDoubleDown.style.display = 'none';
+    playerClear.style.display = 'inline';
 };
 const tableClear = function () {
     dealerCards = [];
     playerCards = [];
-    
     localStorage.setItem('playerCards', JSON.stringify(playerCards));
     localStorage.setItem('dealerCards', JSON.stringify(dealerCards));
     showPlayerCards.innerHTML = ''; // Clear previous cards
     showDealerCards.innerHTML = '';
+    bannerClear();
+    playerDeal.style.display = 'inline';
+    playerClear.style.display = 'none';
 };
 
+const bannerClear = function() {
+    playerWin.style.display = 'none';
+    playerLose.style.display = 'none';
+    playerPush.style.display = 'none';
+    playerBlackJack.style.display = 'none';
+};
+//clear banners on page open
+bannerClear();
+//clear player cards on open
+tableClear();
 //I need to call player stay function if player clicks "double down" so there's a separate function that can be called by either event listener
 const playerStayLogic = function () {
+
+    playerButtonClear();
+    playerClear.style.display = 'inline';
  //set player state to 'stay' so dealer will take more cards
     
     dealerCards[0].state = 'faceUp';
@@ -322,9 +355,12 @@ const splitArray = function () {
 };
 //for the dayNight function
 const getSunsetTime = function () {
+    //Lattitude and Longitude for Denver (approximate)
     const lattitude = 39.996064;
     const longitude =-105.090815; 
-    const sunsetUrl = `https://api.sunrisesunset.io/json?lat=${lattitude}&lng=${longitude}&date=2024-06-13`;
+    //use today as a parameter for fetch request
+    const today = dayjs().format('YYYY-MM-DD')
+    const sunsetUrl = `https://api.sunrisesunset.io/json?lat=${lattitude}&lng=${longitude}&date=${today}`;
 
     fetch(sunsetUrl)
         .then(function(response) {
@@ -335,14 +371,90 @@ const getSunsetTime = function () {
                 alert(`Error: ${response.statusText}`);
             }
         }).then (function (data) {
-            console.log(data)
+            console.log(data);
+            console.log(data.results.sunset);
+            sunriseString = localStorage.setItem('sunriseString', data.results.sunrise);
+            sunsetString = localStorage.setItem('sunsetString', data.results.sunset);
+            console.log(sunsetString);
+            parseDayNight();
         })
         .catch(function(error) {
-            console.log(error)
-            alert ('Unable to connect to Sunset API')
+            console.log(error);
+            alert ('Unable to connect to Sunset API');
         });
+
 };
 
+const parseDayNight = function() {
+    let time = dayjs().format('HH:mm:ss')
+    //Ugh.  Dayjs 1000% IS NOT creating a dayjs in the code below.  Time to go old school
+    //let sunsetTime = '8:32:00 PM';
+    //let sunsetTime24Hour = dayjs(sunsetTime, 'h:mm:ss A').format('HH:mm:ss');
+    //console.log(sunsetTime24Hour);
+//take data values
+sunriseString = localStorage.getItem('sunriseString');
+console.log(sunriseString);
+sunsetString = localStorage.getItem('sunsetString');
+//split sthe strings into arrays at : and space
+let sunriseArray = sunriseString.split(/:| /);
+//define variables to use below for readability
+let srHour = parseInt(sunriseArray[0]);
+let srMin = parseInt(sunriseArray[1]);
+let srSec = parseInt(sunriseArray[2]);
+//sunset
+let sunsetArray = sunsetString.split(/:| /);
+//add 12 to sunset.  We're assuming sunset always happens after noon
+let ssHour = (parseInt(sunsetArray[0]) + 12);
+let ssMin = parseInt(sunsetArray[1]);
+let ssSec = parseInt(sunsetArray[2]);
+
+//turn results into Dayjs objects the hard way
+let todaySunrise = dayjs().set('hour', srHour).set('minute', srMin).set('second', srSec).format('HH:mm:ss');
+let todaySunset = dayjs().set('hour', ssHour).set('minute', ssMin).set('second', ssSec).format('HH:mm:ss');
+console.log(todaySunrise);
+console.log(time);
+console.log(todaySunset);
+console.log(time> todaySunrise)
+console.log(time<todaySunset);
+//set day or night image in html
+if (time>todaySunrise && time <todaySunset) {
+    dayNightImage.src="./assets/images/Day.jpg";
+    console.log (`daytime`)
+} else {
+    console.log (`night time`)
+    dayNightImage.src="./assets/images/Night.jpg";
+};
+
+};
+const isNow = function (){
+    let displayTime = dayjs().format('h:mm A')
+    dayNight.textContent = displayTime
+};
+getSunsetTime();
+isNow();
+//call this function every second
+setInterval(() => {
+    // Call the isNow function here
+    isNow();
+    
+}, 1000); //every second
+//check for sunset every 10 minutes
+setInterval(() => {
+    // Call the isNow function here
+    getSunsetTime();
+    
+}, 600000); // 600000 milliseconds = 10 minutes
+
+//clear irrelevant buttons on page open
+const playerButtonClear = function(){
+playerDeal.style.display = 'none';
+playerHit.style.display = 'none';
+playerStay.style.display = 'none';
+playerDoubleDown.style.display = 'none';
+playerSplit.style.display = 'none';
+playerClear.style.display = 'none';
+};
+playerButtonClear();
 //Add event listener to buttons for gameplay
 playerShuffle1.addEventListener('click', shuffleCards);
 
@@ -368,5 +480,4 @@ playerSplit.addEventListener('click', function(){
 
 playerClear.addEventListener('click', tableClear);
 
-dayNightButton.addEventListener('click', getSunsetTime)
 
