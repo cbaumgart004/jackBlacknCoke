@@ -8,7 +8,7 @@ We set out to create a fun blackjack game that calls on the [Deck of Cards API](
 ## Installation
 Nothing is required to install this game.  Navigate to the login page to begin
 ## Usage
-Navigate to the Login page and click "Sign In to Play.
+Navigate to the [Login page](https://cbaumgart004.github.io./jackBlacknCoke/application.html) and click "Sign In to Play.
 ![Login Page](assets\images\OpeningPage.png)
 If this is your first time, create a User Profile.  If not, log in with your existing credentials.
 Once you've logged in, have fun.  If you have any questions on the rules of Blackjack, click [here](https://bicyclecards.com/how-to-play/blackjack) to 
